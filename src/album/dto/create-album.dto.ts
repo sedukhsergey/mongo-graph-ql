@@ -12,6 +12,6 @@ export class CreateAlbumDto {
   @IsNumber()
   rating: number;
 
-  @IsNumber()
-  userId: number;
+  @IsString()
+  userId: string;
 }
