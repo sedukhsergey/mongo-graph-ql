@@ -14,6 +14,7 @@ import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { Post as PostEntity } from './post-persistence/schemas/post.schema';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
+import { ParamsWithIdDto } from '../dto/params-with-id.dto';
 
 @Controller('post')
 export class PostController {
@@ -25,7 +26,7 @@ export class PostController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<PostEntity> {
+  async findOne(@Param('id') { id }: ParamsWithIdDto): Promise<PostEntity> {
     return this.postService.findOne({ id });
   }
 
@@ -38,7 +39,7 @@ export class PostController {
 
   @Patch(':id')
   updatePartial(
-    @Param('id') id: string,
+    @Param('id') { id }: ParamsWithIdDto,
     @Body(new ValidationPipe()) updateTodoDto: UpdatePostPatchBodyDto,
   ): Promise<PostEntity> {
     return this.postService.updatePartial(id, updateTodoDto);
@@ -46,14 +47,14 @@ export class PostController {
 
   @Put(':id')
   updateAll(
-    @Param('id') id: string,
+    @Param('id') { id }: ParamsWithIdDto,
     @Body(new ValidationPipe()) updateTodoDto: UpdatePostPutBodyDto,
   ): Promise<PostEntity> {
     return this.postService.updateAll(id, updateTodoDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<PostEntity> {
+  delete(@Param('id') { id }: ParamsWithIdDto): Promise<PostEntity> {
     return this.postService.delete(id);
   }
 }
