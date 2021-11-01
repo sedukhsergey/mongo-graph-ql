@@ -3,7 +3,8 @@ import { Post } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
 import { IdDto } from '../dto/id.dto';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
-import { UpdatePostBodyDto } from "./dto/update-post-body.dto";
+import { UpdatePostPatchBodyDto } from "./dto/update-post-patch-body.dto";
+import { UpdatePostPutBodyDto } from "./dto/update-post-put-body.dto";
 
 @Injectable()
 export class PostService {
@@ -21,7 +22,15 @@ export class PostService {
     return this._postPersistence.create(createPost);
   }
 
-  async update(id: string, updatePost: UpdatePostBodyDto): Promise<Post> {
-    return this._postPersistence.update(id, updatePost);
+  async updatePartial(id: string, updatePost: UpdatePostPatchBodyDto): Promise<Post> {
+    return this._postPersistence.updatePartial(id, updatePost);
+  }
+
+  async updateAll(id: string, updatePost: UpdatePostPutBodyDto): Promise<Post> {
+    return this._postPersistence.updateAll(id, updatePost);
+  }
+
+  async delete(id: string): Promise<Post> {
+    return this._postPersistence.delete(id);
   }
 }

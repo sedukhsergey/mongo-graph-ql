@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePostBodyDto {
+export class UpdatePostPatchBodyDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

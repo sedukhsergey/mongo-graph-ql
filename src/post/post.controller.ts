@@ -1,8 +1,19 @@
-import { Body, Controller, Get, Param, Patch, Post, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  ValidationPipe,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
-import {Post as PostEntity} from "./post-persistence/schemas/post.schema";
-import { UpdatePostBodyDto } from "./dto/update-post-body.dto";
+import { Post as PostEntity } from './post-persistence/schemas/post.schema';
+import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
+import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
 
 @Controller('post')
 export class PostController {
@@ -26,7 +37,23 @@ export class PostController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdatePostBodyDto) {
-    return this.postService.update(id, updateTodoDto);
+  updatePartial(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) updateTodoDto: UpdatePostPatchBodyDto,
+  ): Promise<PostEntity> {
+    return this.postService.updatePartial(id, updateTodoDto);
+  }
+
+  @Put(':id')
+  updateAll(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) updateTodoDto: UpdatePostPutBodyDto,
+  ): Promise<PostEntity> {
+    return this.postService.updateAll(id, updateTodoDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<PostEntity> {
+    return this.postService.delete(id);
   }
 }
