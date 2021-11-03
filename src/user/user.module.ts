@@ -6,6 +6,6 @@ import { UserPersistenceModule } from './user-persistence/user-persistence.modul
 @Module({
   controllers: [UserController],
   providers: [UserService],
-  imports: [UserPersistenceModule]
+  imports: [UserPersistenceModule],
 })
 export class UserModule {}

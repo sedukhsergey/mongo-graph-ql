@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -15,6 +16,7 @@ import { Post as PostEntity } from './post-persistence/schemas/post.schema';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
 import { ParamsWithIdDto } from '../dto/params-with-id.dto';
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 @Controller('post')
 export class PostController {

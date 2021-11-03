@@ -6,6 +6,6 @@ import { PostPersistenceModule } from './post-persistence/post-persistence.modul
 @Module({
   controllers: [PostController],
   providers: [PostService],
-  imports: [PostPersistenceModule]
+  imports: [PostPersistenceModule],
 })
 export class PostModule {}
