@@ -1,7 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Exclude, Transform, Type } from "class-transformer";
-import { Address, AddressSchema } from "../../../address/address-persistence/schemas/address.schema";
+import { Exclude, Transform, Type } from 'class-transformer';
+import {
+  Address,
+  AddressSchema,
+} from '../../../address/schemas/address.schema';
 
 export type UserDocument = User & Document;
 
@@ -10,7 +13,7 @@ export class User {
   @Transform(({ value }) => value.toString())
   _id: string;
 
-  // @Prop({ unique: true })
+  @Prop({ unique: true })
   @Prop()
   email: string;
 

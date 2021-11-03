@@ -5,21 +5,28 @@ import { IdDto } from '../dto/id.dto';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
+import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
+import { User } from '../user/user-persistence/schemas/user.schema';
+import { ParamsWithIdDto } from "../dto/params-with-id.dto";
+import { ObjectId } from "mongoose";
 
 @Injectable()
 export class PostService {
-  constructor(private readonly _postPersistence: PostPersistenceService) {}
+  constructor(
+    private readonly _postPersistence: PostPersistenceService,
+    private readonly _userPersistenceService: UserPersistenceService,
+  ) {}
 
   async findAll(): Promise<Post[]> {
     return this._postPersistence.findAll();
   }
 
-  async findOne({ id }: IdDto): Promise<Post> {
-    return this._postPersistence.findOne({ id });
+  async findOne(id): Promise<Post> {
+    return this._postPersistence.findOne(id)
   }
 
-  async create(createPost: CreatePostBodyDto): Promise<Post> {
-    return this._postPersistence.create(createPost);
+  async create(createPost: CreatePostBodyDto, user: User): Promise<Post> {
+    return this._postPersistence.create(createPost, user);
   }
 
   async updatePartial(

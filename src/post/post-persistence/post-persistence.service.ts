@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from "mongoose";
 import { IdDto } from '../../dto/id.dto';
 import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { UpdatePostPatchBodyDto } from '../dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from '../dto/update-post-put-body.dto';
+import { User } from "../../user/user-persistence/schemas/user.schema";
 
 @Injectable()
 export class PostPersistenceService {
@@ -15,16 +16,19 @@ export class PostPersistenceService {
     return this.postModel.find();
   }
 
-  async findOne({ id }: IdDto): Promise<Post> {
-    const post: Post | null = await this.postModel.findById(id);
+  async findOne(id): Promise<Post> {
+    const post: Post | null = await this.postModel.findById(id).populate('author')
     if (post !== null) {
       return post;
     }
     return null;
   }
 
-  async create(postData: CreatePostBodyDto): Promise<Post> {
-    const createdPost = new this.postModel(postData);
+  create(postData: CreatePostBodyDto, author: User) {
+    const createdPost = new this.postModel({
+      ...postData,
+      author,
+    });
     return createdPost.save();
   }
 

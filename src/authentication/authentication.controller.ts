@@ -6,8 +6,9 @@ import {
   Req,
   Res,
   UseGuards,
-  UseInterceptors, ValidationPipe
-} from "@nestjs/common";
+  UseInterceptors,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import RequestWithUser from '../interfaces/request-with-user.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -25,7 +26,9 @@ export class AuthenticationController {
 
   @Public()
   @Post('register')
-  async register(@Body(new ValidationPipe()) registrationData: CreateUserDto): Promise<User> {
+  async register(
+    @Body(new ValidationPipe()) registrationData: CreateUserDto,
+  ): Promise<User> {
     return this.authenticationService.register(registrationData);
   }
 
