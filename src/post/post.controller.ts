@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Put,
-  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -16,7 +15,6 @@ import { Post as PostEntity } from './post-persistence/schemas/post.schema';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
 import { ParamsWithIdDto } from '../dto/params-with-id.dto';
-import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 @Controller('post')
 export class PostController {
@@ -42,17 +40,17 @@ export class PostController {
   @Patch(':id')
   updatePartial(
     @Param('id') { id }: ParamsWithIdDto,
-    @Body(new ValidationPipe()) updateTodoDto: UpdatePostPatchBodyDto,
+    @Body(new ValidationPipe()) updatePost: UpdatePostPatchBodyDto,
   ): Promise<PostEntity> {
-    return this.postService.updatePartial(id, updateTodoDto);
+    return this.postService.updatePartial(id, updatePost);
   }
 
   @Put(':id')
   updateAll(
     @Param('id') { id }: ParamsWithIdDto,
-    @Body(new ValidationPipe()) updateTodoDto: UpdatePostPutBodyDto,
+    @Body(new ValidationPipe()) updatePost: UpdatePostPutBodyDto,
   ): Promise<PostEntity> {
-    return this.postService.updateAll(id, updateTodoDto);
+    return this.postService.updateAll(id, updatePost);
   }
 
   @Delete(':id')

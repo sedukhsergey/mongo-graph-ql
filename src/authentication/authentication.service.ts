@@ -35,7 +35,6 @@ export class AuthenticationService {
     try {
       const user = await this.userPersistence.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      user.password = undefined;
       return user;
     } catch (error) {
       throw new HttpException(
@@ -68,7 +67,6 @@ export class AuthenticationService {
         ...registrationData,
         password: hashedPassword,
       });
-      createdUser.password = undefined;
       return createdUser;
     } catch (error) {
       if (error instanceof mongoose.Error) {
