@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray } from 'class-validator';
 
 export class CreatePostBodyDto {
   @IsString()
@@ -8,4 +8,8 @@ export class CreatePostBodyDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  categories: string[];
 }

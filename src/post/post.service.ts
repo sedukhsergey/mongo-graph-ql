@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
-import { IdDto } from '../dto/id.dto';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import { User } from '../user/user-persistence/schemas/user.schema';
-import { ParamsWithIdDto } from "../dto/params-with-id.dto";
-import { ObjectId } from "mongoose";
 
 @Injectable()
 export class PostService {
@@ -22,7 +19,7 @@ export class PostService {
   }
 
   async findOne(id): Promise<Post> {
-    return this._postPersistence.findOne(id)
+    return this._postPersistence.findOne(id);
   }
 
   async create(createPost: CreatePostBodyDto, user: User): Promise<Post> {

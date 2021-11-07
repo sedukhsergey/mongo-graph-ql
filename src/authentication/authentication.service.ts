@@ -67,6 +67,7 @@ export class AuthenticationService {
         ...registrationData,
         password: hashedPassword,
       });
+      createdUser.password = null;
       return createdUser;
     } catch (error) {
       if (error instanceof mongoose.Error) {

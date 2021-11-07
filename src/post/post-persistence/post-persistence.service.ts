@@ -1,34 +1,35 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
-import { Model, ObjectId } from "mongoose";
-import { IdDto } from '../../dto/id.dto';
+import { Model } from 'mongoose';
 import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { UpdatePostPatchBodyDto } from '../dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from '../dto/update-post-put-body.dto';
-import { User } from "../../user/user-persistence/schemas/user.schema";
+import { User } from '../../user/user-persistence/schemas/user.schema';
 
 @Injectable()
 export class PostPersistenceService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   async findAll(): Promise<Post[]> {
-    return this.postModel.find();
+    return this.postModel.find().populate('author', 'author.email address');
   }
 
   async findOne(id): Promise<Post> {
-    const post: Post | null = await this.postModel.findById(id).populate('author')
+    const post: Post | null = await this.postModel
+      .findById(id)
+      .populate(['author', 'categories']);
     if (post !== null) {
       return post;
     }
     return null;
   }
 
-  create(postData: CreatePostBodyDto, author: User) {
-    const createdPost = new this.postModel({
+  async create(postData: CreatePostBodyDto, author: User) {
+    const createdPost = await new this.postModel({
       ...postData,
       author,
-    });
+    }).populate('categories');
     return createdPost.save();
   }
 
@@ -39,7 +40,7 @@ export class PostPersistenceService {
     const post = await this.postModel
       .findByIdAndUpdate(id, postData)
       .setOptions({ overwrite: true, new: true });
-    if (post !== null) {
+    if (post === null) {
       throw new NotFoundException();
     }
     return post;

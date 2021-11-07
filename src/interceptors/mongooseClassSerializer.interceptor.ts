@@ -14,7 +14,6 @@ function MongooseClassSerializerInterceptor(
       if (!(document instanceof Document)) {
         return document;
       }
-
       return plainToClass(classToIntercept, document.toJSON());
     }
 

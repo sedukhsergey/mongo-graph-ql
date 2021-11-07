@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Req,
-  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -16,12 +15,9 @@ import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { Post as PostEntity } from './post-persistence/schemas/post.schema';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
 import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
-import { ParamsWithIdDto } from '../dto/params-with-id.dto';
 import { User } from '../user/user-persistence/schemas/user.schema';
-import MongooseClassSerializerInterceptor from "../interceptors/mongooseClassSerializer.interceptor";
 
 @Controller('post')
-@UseInterceptors(MongooseClassSerializerInterceptor(PostEntity))
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -31,8 +27,8 @@ export class PostController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string ): Promise<PostEntity> {
-    return this.postService.findOne(id)
+  async findOne(@Param('id') id: string): Promise<PostEntity> {
+    return this.postService.findOne(id);
   }
 
   @Post()
@@ -46,7 +42,7 @@ export class PostController {
 
   @Patch(':id')
   updatePartial(
-    @Param('id') { id }: ParamsWithIdDto,
+    @Param('id') id: string,
     @Body(new ValidationPipe()) updatePost: UpdatePostPatchBodyDto,
   ): Promise<PostEntity> {
     return this.postService.updatePartial(id, updatePost);
@@ -54,14 +50,14 @@ export class PostController {
 
   @Put(':id')
   updateAll(
-    @Param('id') { id }: ParamsWithIdDto,
+    @Param('id') id: string,
     @Body(new ValidationPipe()) updatePost: UpdatePostPutBodyDto,
   ): Promise<PostEntity> {
     return this.postService.updateAll(id, updatePost);
   }
 
   @Delete(':id')
-  delete(@Param('id') { id }: ParamsWithIdDto): Promise<PostEntity> {
+  delete(@Param('id') id: string): Promise<PostEntity> {
     return this.postService.delete(id);
   }
 }

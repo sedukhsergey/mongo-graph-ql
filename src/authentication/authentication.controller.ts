@@ -6,7 +6,6 @@ import {
   Req,
   Res,
   UseGuards,
-  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
@@ -16,11 +15,9 @@ import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import { Response } from 'express';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 import { Public } from '../decorators/public.decorator';
-import MongooseClassSerializerInterceptor from '../interceptors/mongooseClassSerializer.interceptor';
 import { User } from '../user/user-persistence/schemas/user.schema';
 
 @Controller('authentication')
-@UseInterceptors(MongooseClassSerializerInterceptor(User))
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
