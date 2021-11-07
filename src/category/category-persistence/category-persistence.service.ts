@@ -7,7 +7,7 @@ import { CreateCategoryDataBodyDto } from '../dto/ create-category-data-body.dto
 @Injectable()
 export class CategoryPersistenceService {
   constructor(
-    @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
+    @InjectModel(Category.name) private categoryModel: Model<Category>,
   ) {}
 
   async findAll(): Promise<Category[]> {

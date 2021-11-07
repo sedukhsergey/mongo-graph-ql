@@ -9,7 +9,7 @@ import {
 export type UserDocument = User & Document;
 
 @Schema()
-export class User {
+export class User extends Document {
   _id: string;
 
   @Prop({ unique: true })

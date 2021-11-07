@@ -8,7 +8,7 @@ import { Category } from '../../../category/category-persistence/schemas/categor
 export type PostDocument = Post & Document;
 
 @Schema()
-export class Post {
+export class Post extends Document {
   _id: string;
 
   @Prop()

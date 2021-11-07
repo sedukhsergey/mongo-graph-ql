@@ -1,21 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { User } from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class PostPersistenceService {
   constructor(
-    @InjectModel(Post.name) private postModel: Model<PostDocument>,
+    @InjectModel(Post.name) private postModel: Model<Post>,
     private readonly _categoryPersistenceService: CategoryPersistenceService,
   ) {}
 
   async findBySearch(search: string): Promise<Post[]> {
+    // const data: any = await this.postModel
+    //   .find({
+    //     name: {
+    //       $regex: search,
+    //     },
+    //   })
+    //   .populate('categories')
+    //   .populate('author', 'email address._id address.street');
+
     const data: Post[] = await this.postModel
       .find()
       .populate('categories')
@@ -23,11 +33,13 @@ export class PostPersistenceService {
       .populate({
         path: 'categories',
         match: {
-          name: {
-            $eq: search,
+          _id: {
+            $in: ['6187a4ffb9b6b0a47225d1f6', '6187a50ab9b6b0a47225d1fd'],
           },
         },
       })
+      .where('categories')
+      .ne([])
 
     return data;
     // return data.filter((i: any) => {
@@ -76,7 +88,7 @@ export class PostPersistenceService {
         categories,
         author,
       })
-      .setOptions({ overwrite: true, new: true });
+      .setOptions({ overwrite: true, new: true, upsert: true });
     if (post === null) {
       throw new NotFoundException();
     }
