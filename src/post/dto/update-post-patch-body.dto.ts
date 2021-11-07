@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ObjectId } from "mongoose";
 
 export class UpdatePostPatchBodyDto {
   @IsOptional()
@@ -10,4 +11,9 @@ export class UpdatePostPatchBodyDto {
   @IsString()
   @IsNotEmpty()
   content?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  categories: ObjectId[];
 }
