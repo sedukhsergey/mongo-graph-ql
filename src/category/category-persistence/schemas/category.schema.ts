@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type CategoryDocument = Category & Document;
 
 @Schema()
-export class Category extends Document{
+export class Category {
   @Prop()
   name: string;
 }

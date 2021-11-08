@@ -8,12 +8,15 @@ import {
 
 export type UserDocument = User & Document;
 
-@Schema()
-export class User extends Document {
+@Schema({
+  toJSON: {
+    getters: true,
+  },
+})
+export class User {
   _id: string;
 
   @Prop({ unique: true })
-  @Prop()
   email: string;
 
   @Prop()
@@ -22,6 +25,19 @@ export class User extends Document {
   @Prop()
   @Exclude()
   password: string;
+
+  @Prop({
+    get: (creditCardNumber: string) => {
+      if (!creditCardNumber) {
+        return;
+      }
+      const lastFourDigits = creditCardNumber.slice(
+        creditCardNumber.length - 4,
+      );
+      return `****-****-****-${lastFourDigits}`;
+    },
+  })
+  creditCardNumber?: string;
 
   @Prop({ type: AddressSchema })
   @Type(() => Address)

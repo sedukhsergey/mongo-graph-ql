@@ -1,18 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
-import { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { User } from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
-import mongoose from 'mongoose';
 
 @Injectable()
 export class PostPersistenceService {
   constructor(
-    @InjectModel(Post.name) private postModel: Model<Post>,
+    @InjectModel(Post.name) private postModel: Model<PostDocument>,
     private readonly _categoryPersistenceService: CategoryPersistenceService,
   ) {}
 
