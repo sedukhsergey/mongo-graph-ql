@@ -22,9 +22,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async findAll(
-    @Query('search') search: string,
-  ): Promise<PostEntity[]> {
+  async findAll(@Query('search') search: string): Promise<PostEntity[]> {
     if (!search) {
       return this.postService.findAll();
     }

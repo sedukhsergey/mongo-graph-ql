@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { ObjectId } from "mongoose";
+import { ObjectId } from 'mongoose';
 
 export class UpdatePostPatchBodyDto {
   @IsOptional()

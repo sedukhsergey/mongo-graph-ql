@@ -11,7 +11,7 @@ export class CategoryPersistenceService {
   ) {}
 
   async findAll(): Promise<Category[]> {
-    return this.categoryModel.find()
+    return this.categoryModel.find();
   }
 
   async findByIds(ids: string[]): Promise<Category[]> {

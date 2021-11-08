@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
-import { IdDto } from '../dto/id.dto';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
-import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
-import { UpdatePostPutBodyDto } from './dto/update-post-put-body.dto';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import { User } from '../user/user-persistence/schemas/user.schema';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
@@ -26,7 +23,7 @@ export class PostService {
   }
 
   async search(search: string): Promise<Post[]> {
-    return this._postPersistence.findBySearch(search)
+    return this._postPersistence.findBySearch(search);
   }
 
   async create(createPost: CreatePostBodyDto, user: User): Promise<Post> {

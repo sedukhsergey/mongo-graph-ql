@@ -5,12 +5,14 @@ import {
   Address,
   AddressSchema,
 } from '../../../address/schemas/address.schema';
+import { Post } from '../../../post/post-persistence/schemas/post.schema';
 
 export type UserDocument = User & Document;
 
 @Schema({
   toJSON: {
     getters: true,
+    virtuals: true,
   },
 })
 export class User {
@@ -25,6 +27,14 @@ export class User {
   @Prop()
   @Exclude()
   password: string;
+
+  @Prop()
+  firstName: string;
+
+  @Prop()
+  lastName: string;
+
+  fullName: string;
 
   @Prop({
     get: (creditCardNumber: string) => {
@@ -42,6 +52,26 @@ export class User {
   @Prop({ type: AddressSchema })
   @Type(() => Address)
   address: Address;
+
+  @Type(() => Post)
+  posts: Post[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.virtual('fullName')
+  .get(function (this: UserDocument) {
+    return `${this.firstName} ${this.lastName}`;
+  })
+  .set(function (this: UserDocument, fullName: string) {
+    const [firstName, lastName] = fullName.split(' ');
+    this.set({ firstName, lastName });
+  });
+
+UserSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'author',
+});
+
+export { UserSchema };

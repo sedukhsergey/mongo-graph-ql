@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PostPersistenceService } from './post-persistence.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Post, PostSchema } from './schemas/post.schema';
-import { CategoryPersistenceModule } from "../../category/category-persistence/category-persistence.module";
+import { CategoryPersistenceModule } from '../../category/category-persistence/category-persistence.module';
 
 @Module({
   imports: [
