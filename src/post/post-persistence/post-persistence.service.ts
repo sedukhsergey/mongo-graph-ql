@@ -27,19 +27,23 @@ export class PostPersistenceService {
     //   .populate('author', 'email address._id address.street');
 
     const data: Post[] = await this.postModel
-      .find()
-      .populate('categories')
-      .populate('author', 'email address._id address.street')
-      .populate({
-        path: 'categories',
-        match: {
-          _id: {
-            $in: ['6187a4ffb9b6b0a47225d1f6', '6187a50ab9b6b0a47225d1fd'],
-          },
+      .find({
+        name: {
+          $regex: search,
         },
       })
+      .populate('categories')
+      .populate('author', 'email address._id address.street')
+      // .populate({
+      //   path: 'categories',
+      //   match: {
+      //     _id: {
+      //       $in: ['6187a4ffb9b6b0a47225d1f6', '6187a50ab9b6b0a47225d1fd'],
+      //     },
+      //   },
+      // })
       .where('categories')
-      .ne([])
+      .ne([]);
 
     return data;
     // return data.filter((i: any) => {

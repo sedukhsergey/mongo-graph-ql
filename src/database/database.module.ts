@@ -11,11 +11,9 @@ import { MongooseModule } from '@nestjs/mongoose';
         const username = configService.get('MONGO_USERNAME');
         const password = configService.get('MONGO_PASSWORD');
         const database = configService.get('MONGO_DATABASE');
-        const host = configService.get('MONGO_HOST');
 
         return {
-          uri: `mongodb://${username}:${password}@${host}`,
-          dbName: database,
+          uri: `mongodb+srv://${username}:${password}@cluster0.mlorc.mongodb.net/${database}?retryWrites=true&w=majority`,
         };
       },
       inject: [ConfigService],

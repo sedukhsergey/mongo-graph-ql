@@ -40,6 +40,7 @@ export class AuthenticationController {
     const { user } = request;
     const cookie = this.authenticationService.getCookieWithJwtToken(user._id);
     response.setHeader('Set-Cookie', cookie);
+    user.password = null;
     return user;
   }
 
