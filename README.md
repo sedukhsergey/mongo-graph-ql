@@ -54,7 +54,7 @@ timeZoneInfo: /usr/share/zoneinfo
 #operationProfiling:
  
 replication:
-replSetName: mongoset
+replSetName: sedukh
  
 #sharding:
 ## Enterprise-Only Options:
