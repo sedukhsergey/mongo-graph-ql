@@ -6,6 +6,7 @@ import { UserPersistenceService } from '../user/user-persistence/user-persistenc
 import { User } from '../user/user-persistence/schemas/user.schema';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
 import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
+import { IdDto } from '../dto/id.dto';
 
 @Injectable()
 export class PostService {
@@ -14,16 +15,16 @@ export class PostService {
     private readonly _userPersistenceService: UserPersistenceService,
   ) {}
 
-  async findAll(): Promise<Post[]> {
-    return this._postPersistence.findAll();
+  async findAll(user: User): Promise<Post[]> {
+    return this._postPersistence.findAll(user);
   }
 
   async findOne(id): Promise<Post> {
     return this._postPersistence.findOne(id);
   }
 
-  async search(search: string): Promise<Post[]> {
-    return this._postPersistence.findBySearch(search);
+  async search(user: User, search: string[]): Promise<Post[]> {
+    return this._postPersistence.findBySearch(user, search);
   }
 
   async create(createPost: CreatePostBodyDto, user: User): Promise<Post> {

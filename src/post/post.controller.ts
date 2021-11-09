@@ -22,11 +22,14 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async findAll(@Query('search') search: string): Promise<PostEntity[]> {
+  async findAll(
+    @Req() req,
+    @Query('search') search: string[],
+  ): Promise<PostEntity[]> {
     if (!search) {
-      return this.postService.findAll();
+      return this.postService.findAll(req.user);
     }
-    return this.postService.search(search);
+    return this.postService.search(req.user, search);
   }
 
   @Get(':id')

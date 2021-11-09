@@ -7,6 +7,7 @@ import { User } from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
+import { Category } from '../../category/category-persistence/schemas/category.schema';
 
 @Injectable()
 export class PostPersistenceService {
@@ -15,44 +16,29 @@ export class PostPersistenceService {
     private readonly _categoryPersistenceService: CategoryPersistenceService,
   ) {}
 
-  async findBySearch(search: string): Promise<Post[]> {
-    // const data: any = await this.postModel
-    //   .find({
-    //     name: {
-    //       $regex: search,
-    //     },
-    //   })
-    //   .populate('categories')
-    //   .populate('author', 'email address._id address.street');
-
-    const data: Post[] = await this.postModel
-      .find({
-        name: {
-          $regex: search,
-        },
-      })
-      .populate('categories')
-      .populate('author', 'email address._id address.street')
-      // .populate({
-      //   path: 'categories',
-      //   match: {
-      //     _id: {
-      //       $in: ['6187a4ffb9b6b0a47225d1f6', '6187a50ab9b6b0a47225d1fd'],
-      //     },
-      //   },
-      // })
-      .where('categories')
-      .ne([]);
-
-    return data;
-    // return data.filter((i: any) => {
-    //   return i.categories.length
-    // })
+  async deleteMany(ids: string[]) {
+    return this.postModel.deleteMany({ _id: ids });
   }
 
-  async findAll(): Promise<Post[]> {
+  async findBySearch(user: User, search: any[]): Promise<Post[]> {
+    const categories: Category[] =
+      await this._categoryPersistenceService.findByIds(search);
+    const data: Post[] = await this.postModel
+      .find({
+        author: user,
+        categories: {
+          $in: categories,
+        },
+      })
+      .populate('categories');
+    return data;
+  }
+
+  async findAll(user: User): Promise<Post[]> {
     return this.postModel
-      .find()
+      .find({
+        author: user,
+      })
       .populate('author', 'email address._id address.street')
       .populate('categories');
   }

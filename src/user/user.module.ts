@@ -4,8 +4,8 @@ import { UserController } from './user.controller';
 import { UserPersistenceModule } from './user-persistence/user-persistence.module';
 
 @Module({
+  imports: [UserPersistenceModule],
   controllers: [UserController],
   providers: [UserService],
-  imports: [UserPersistenceModule],
 })
 export class UserModule {}
