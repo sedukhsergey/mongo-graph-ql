@@ -22,16 +22,21 @@ $ npm run start:prod
 
 ```bash
 # unit tests
-$ npm run test.sh
+$ npm run test
 
 # e2e tests
-$ npm run test.sh:e2e
+$ npm run test:e2e
 
 # test.sh coverage
-$ npm run test.sh:cov
+$ npm run test:cov
 ```
 
 ## Managing Transactions
+## 0. Create directories in urs/bin/env
+```bash
+sudo mkdir -p rs1 rs2 rs3
+```
+
 ## 1. change  /etc/mongod.conf file
 ```bash
 # where to write logging data.
