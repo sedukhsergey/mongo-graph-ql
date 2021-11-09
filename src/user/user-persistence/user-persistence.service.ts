@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -39,19 +40,21 @@ export class UserPersistenceService {
   }
 
   async delete({ id, session }: DeleteUserDto) {
-    const user = await this.userModel
-      .findByIdAndDelete(id)
-      .populate('posts')
-      .session(session);
-    if (!user) {
-      throw new NotFoundException();
+    try {
+      const user = await this.userModel
+        .findOneAndDelete({ id })
+        .populate('posts')
+        .session(session);
+      if (!user) {
+        throw new NotFoundException();
+      }
+      const posts = user.posts;
+      return this.postPersistence.deleteMany(
+        posts.map((post) => post._id.toString()),
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err);
     }
-    const posts = user.posts;
-    console.log('post', posts);
-    throw new NotFoundException('Sss');
-    return this.postPersistence.deleteMany(
-      posts.map((post) => post._id.toString()),
-    );
   }
 
   async getById(id: string): Promise<UserDocument> {

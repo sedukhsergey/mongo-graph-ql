@@ -6,7 +6,6 @@ import { UserPersistenceService } from '../user/user-persistence/user-persistenc
 import { User } from '../user/user-persistence/schemas/user.schema';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
 import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
-import { IdDto } from '../dto/id.dto';
 
 @Injectable()
 export class PostService {
