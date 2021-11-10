@@ -34,13 +34,29 @@ export class PostController {
         transform: true,
       }),
     )
-    { skip, limit, search, startId }: SearchPostDto,
+    { skip, search, limit, categoriesIds, startId }: SearchPostDto,
   ): Promise<PostEntity[] | SearchPostsResultsDto> {
     const user: UserDocument = req.user;
-    if (!search) {
-      return this.postService.findAllByAuthor({ user });
+    if (categoriesIds) {
+      return this.postService.searchByCategories({
+        user,
+        categoriesIds,
+        skip,
+        limit,
+        startId,
+      });
     }
-    return this.postService.search({ user, search, skip, limit, startId });
+
+    if (search) {
+      return this.postService.searchByTitle({
+        skip,
+        search,
+        limit,
+        startId,
+        user,
+      });
+    }
+    return this.postService.findAllByAuthor({ user });
   }
 
   @Get(':id')

@@ -26,13 +26,13 @@ export class PostPersistenceService {
 
   async findByCategories({
     user,
-    search,
+    categoriesIds,
     limit = 0,
     skip = 0,
     startId,
   }: SearchPostsDto): Promise<SearchPostsResultsDto> {
     const categories: Category[] =
-      await this._categoryPersistenceService.findByIds(search);
+      await this._categoryPersistenceService.findByIds(categoriesIds);
     const findQuery = this.postModel
       .find({
         ...(startId && {
@@ -65,6 +65,43 @@ export class PostPersistenceService {
       results,
       count,
     };
+  }
+
+  async findAllByTitle({
+    user,
+    search,
+    limit = 0,
+    skip = 0,
+    startId,
+  }: SearchPostsDto): Promise<SearchPostsResultsDto> {
+    const findQuery = this.postModel
+      .find({
+        ...(startId && {
+          _id: {
+            $gt: startId,
+          },
+        }),
+        ...(search && {
+          $text: {
+            $search: search,
+            $caseSensitive: false,
+          },
+        }),
+        author: user,
+      })
+      .sort({ _id: 1 })
+      .skip(skip)
+      .populate('author', 'email address._id address.street')
+      .populate('categories');
+
+    if (limit) {
+      findQuery.limit(limit);
+    }
+
+    const results = await findQuery;
+    const count = await this.postModel.count();
+
+    return { results, count };
   }
 
   async findAllByAuthor({ user }: FindPostsByAuthorDto): Promise<Post[]> {

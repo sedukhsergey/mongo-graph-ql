@@ -25,19 +25,35 @@ export class PostService {
     return this._postPersistence.findOne(id);
   }
 
-  async search({
+  async searchByCategories({
     user,
-    search,
+    categoriesIds,
     limit,
     skip,
     startId,
   }: SearchPostsDto): Promise<SearchPostsResultsDto> {
     return this._postPersistence.findByCategories({
       user,
+      categoriesIds,
+      limit,
+      skip,
+      startId,
+    });
+  }
+
+  async searchByTitle({
+    search,
+    limit,
+    skip,
+    startId,
+    user,
+  }: SearchPostsDto): Promise<SearchPostsResultsDto> {
+    return this._postPersistence.findAllByTitle({
       search,
       limit,
       skip,
       startId,
+      user,
     });
   }
 
