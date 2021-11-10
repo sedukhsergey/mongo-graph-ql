@@ -6,6 +6,9 @@ import { UserPersistenceService } from '../user/user-persistence/user-persistenc
 import { User } from '../user/user-persistence/schemas/user.schema';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
 import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
+import { FindPostsByAuthorDto } from './dto/find-posts-by-author.dto';
+import { SearchPostsDto } from './dto/search-posts.dto';
+import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 
 @Injectable()
 export class PostService {
@@ -14,16 +17,28 @@ export class PostService {
     private readonly _userPersistenceService: UserPersistenceService,
   ) {}
 
-  async findAll(user: User): Promise<Post[]> {
-    return this._postPersistence.findAll(user);
+  async findAllByAuthor({ user }: FindPostsByAuthorDto): Promise<Post[]> {
+    return this._postPersistence.findAllByAuthor({ user });
   }
 
   async findOne(id): Promise<Post> {
     return this._postPersistence.findOne(id);
   }
 
-  async search(user: User, search: string[]): Promise<Post[]> {
-    return this._postPersistence.findBySearch(user, search);
+  async search({
+    user,
+    search,
+    limit,
+    skip,
+    startId,
+  }: SearchPostsDto): Promise<SearchPostsResultsDto> {
+    return this._postPersistence.findByCategories({
+      user,
+      search,
+      limit,
+      skip,
+      startId,
+    });
   }
 
   async create(createPost: CreatePostBodyDto, user: User): Promise<Post> {

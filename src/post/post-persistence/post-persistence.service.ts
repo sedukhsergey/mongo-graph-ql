@@ -9,6 +9,9 @@ import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repos
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
 import { Category } from '../../category/category-persistence/schemas/category.schema';
 import { DeleteManyPostsDto } from '../dto/delete-many-posts.dto';
+import { FindPostsByAuthorDto } from '../dto/find-posts-by-author.dto';
+import { SearchPostsDto } from '../dto/search-posts.dto';
+import { SearchPostsResultsDto } from '../dto/search-posts-results.dto';
 
 @Injectable()
 export class PostPersistenceService {
@@ -21,25 +24,55 @@ export class PostPersistenceService {
     return this.postModel.deleteMany({ _id: ids }).session(session);
   }
 
-  async findBySearch(user: User, search: any[]): Promise<Post[]> {
+  async findByCategories({
+    user,
+    search,
+    limit = 0,
+    skip = 0,
+    startId,
+  }: SearchPostsDto): Promise<SearchPostsResultsDto> {
     const categories: Category[] =
       await this._categoryPersistenceService.findByIds(search);
-    const data: Post[] = await this.postModel
+    const findQuery = this.postModel
+      .find({
+        ...(startId && {
+          _id: {
+            $gt: startId,
+          },
+        }),
+        author: user,
+        categories: {
+          $in: categories,
+        },
+      })
+      .skip(skip)
+      .populate('categories');
+
+    if (limit) {
+      findQuery.limit(limit);
+    }
+
+    const results: PostDocument[] = await findQuery;
+    const count: number = await this.postModel
       .find({
         author: user,
         categories: {
           $in: categories,
         },
       })
-      .populate('categories');
-    return data;
+      .count();
+    return {
+      results,
+      count,
+    };
   }
 
-  async findAll(user: User): Promise<Post[]> {
+  async findAllByAuthor({ user }: FindPostsByAuthorDto): Promise<Post[]> {
     return this.postModel
       .find({
         author: user,
       })
+      .sort({ _id: 1 })
       .populate('author', 'email address._id address.street')
       .populate('categories');
   }

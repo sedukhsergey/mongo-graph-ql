@@ -15,21 +15,32 @@ import { PostService } from './post.service';
 import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { Post as PostEntity } from './post-persistence/schemas/post.schema';
 import { UpdatePostPatchBodyDto } from './dto/update-post-patch-body.dto';
-import { User } from '../user/user-persistence/schemas/user.schema';
+import {
+  User,
+  UserDocument,
+} from '../user/user-persistence/schemas/user.schema';
+import { SearchPostDto } from '../dto/search-post.dto';
+import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async findAll(
+  async findAllByAuthor(
     @Req() req,
-    @Query('search') search: string[],
-  ): Promise<PostEntity[]> {
+    @Query(
+      new ValidationPipe({
+        transform: true,
+      }),
+    )
+    { skip, limit, search, startId }: SearchPostDto,
+  ): Promise<PostEntity[] | SearchPostsResultsDto> {
+    const user: UserDocument = req.user;
     if (!search) {
-      return this.postService.findAll(req.user);
+      return this.postService.findAllByAuthor({ user });
     }
-    return this.postService.search(req.user, search);
+    return this.postService.search({ user, search, skip, limit, startId });
   }
 
   @Get(':id')
