@@ -8,6 +8,7 @@ import { CategoryPersistenceService } from '../../category/category-persistence/
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
 import { Category } from '../../category/category-persistence/schemas/category.schema';
+import { DeleteManyPostsDto } from '../dto/delete-many-posts.dto';
 
 @Injectable()
 export class PostPersistenceService {
@@ -16,8 +17,8 @@ export class PostPersistenceService {
     private readonly _categoryPersistenceService: CategoryPersistenceService,
   ) {}
 
-  async deleteMany(ids: string[]) {
-    return this.postModel.deleteMany({ _id: ids });
+  async deleteMany({ ids, session }: DeleteManyPostsDto) {
+    return this.postModel.deleteMany({ _id: ids }).session(session);
   }
 
   async findBySearch(user: User, search: any[]): Promise<Post[]> {

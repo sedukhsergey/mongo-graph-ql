@@ -48,10 +48,8 @@ export class UserPersistenceService {
       if (!user) {
         throw new NotFoundException();
       }
-      const posts = user.posts;
-      return this.postPersistence.deleteMany(
-        posts.map((post) => post._id.toString()),
-      );
+      const postsIds = user.posts.map((post) => post._id.toString());
+      return this.postPersistence.deleteMany({ ids: postsIds, session });
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
