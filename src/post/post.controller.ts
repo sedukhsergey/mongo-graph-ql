@@ -67,7 +67,8 @@ export class PostController {
   @Post()
   async create(
     @Req() req,
-    @Body(new ValidationPipe()) createPost: CreatePostBodyDto,
+    @Body(new ValidationPipe({ transform: true }))
+    createPost: CreatePostBodyDto,
   ): Promise<PostEntity> {
     const user: User = req.user;
     return this.postService.create(createPost, user);
@@ -76,7 +77,7 @@ export class PostController {
   @Patch(':id')
   updatePartial(
     @Param('id') id: string,
-    @Body(new ValidationPipe())
+    @Body(new ValidationPipe({ transform: true }))
     { title, content, categories }: UpdatePostPatchBodyDto,
   ): Promise<PostEntity> {
     return this.postService.updatePartial({ id, title, content, categories });
@@ -86,7 +87,7 @@ export class PostController {
   updateAll(
     @Req() req,
     @Param('id') id: string,
-    @Body(new ValidationPipe())
+    @Body(new ValidationPipe({ transform: true }))
     { title, content, categories }: CreatePostBodyDto,
   ): any {
     const user: User = req.user;

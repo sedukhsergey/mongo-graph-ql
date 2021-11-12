@@ -39,7 +39,7 @@ export class UserPersistenceService {
     );
   }
 
-  async delete({ id, session }: DeleteUserDto) {
+  async delete({ id, session }: DeleteUserDto): Promise<void> {
     try {
       const user = await this.userModel
         .findOneAndDelete({ id })
@@ -49,7 +49,7 @@ export class UserPersistenceService {
         throw new NotFoundException();
       }
       const postsIds = user.posts.map((post) => post._id.toString());
-      return this.postPersistence.deleteMany({ ids: postsIds, session });
+      await this.postPersistence.deleteManyPosts({ ids: postsIds, session });
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

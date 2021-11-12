@@ -49,6 +49,7 @@ export class User {
   })
   creditCardNumber?: string;
 
+  // One to One
   @Prop({ type: AddressSchema })
   @Type(() => Address)
   address: Address;

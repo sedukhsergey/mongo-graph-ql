@@ -8,7 +8,7 @@ import { CategoryPersistenceService } from '../../category/category-persistence/
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
 import { Category } from '../../category/category-persistence/schemas/category.schema';
-import { DeleteManyPostsDto } from '../dto/delete-many-posts.dto';
+import { DeleteManyDto } from '../../dto/delete-many.dto';
 import { FindPostsByAuthorDto } from '../dto/find-posts-by-author.dto';
 import { SearchPostsDto } from '../dto/search-posts.dto';
 import { SearchPostsResultsDto } from '../dto/search-posts-results.dto';
@@ -20,8 +20,8 @@ export class PostPersistenceService {
     private readonly _categoryPersistenceService: CategoryPersistenceService,
   ) {}
 
-  async deleteMany({ ids, session }: DeleteManyPostsDto) {
-    return this.postModel.deleteMany({ _id: ids }).session(session);
+  async deleteManyPosts({ ids, session }: DeleteManyDto): Promise<void> {
+    await this.postModel.deleteMany({ _id: ids }).session(session);
   }
 
   async findByCategories({
@@ -142,13 +142,15 @@ export class PostPersistenceService {
   }: UpdatePostRepositoryDto): Promise<Post | null> {
     const post = await this.postModel
       .findByIdAndUpdate(id, {
-        id,
         title,
         content,
         categories,
+        someField: 'asdas',
         author,
       })
       .setOptions({ overwrite: true, new: true, upsert: true });
+    // overwrite make overwrite to rewrite all properties
+    // upsert:true create new document if not found
     if (post === null) {
       throw new NotFoundException();
     }

@@ -21,10 +21,12 @@ export class Post {
   })
   content: string;
 
+  // ManyToOne
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Type(() => User)
   author: User;
 
+  // ManyToMany
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: Category.name }],
   })
