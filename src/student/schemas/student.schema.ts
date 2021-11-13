@@ -16,7 +16,7 @@ export class Student {
   _id: string;
 
   @Prop()
-  groupNum: number;
+  progress: number;
 
   // One to One
   @Prop({ type: UserSchema })
