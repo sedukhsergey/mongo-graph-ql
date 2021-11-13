@@ -6,6 +6,7 @@ import {
   AddressSchema,
 } from '../../../address/schemas/address.schema';
 import { Post } from '../../../post/post-persistence/schemas/post.schema';
+import { Student } from "../../../student/schemas/student.schema";
 
 export type UserDocument = User & Document;
 
@@ -54,8 +55,9 @@ export class User {
   @Type(() => Address)
   address: Address;
 
-  @Type(() => Post)
   posts: Post[];
+
+  student: Student;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
@@ -75,6 +77,12 @@ UserSchema.virtual('posts', {
   ref: 'Post',
   localField: '_id',
   foreignField: 'author',
+});
+
+UserSchema.virtual('student', {
+  ref: 'Student',
+  localField: '_id',
+  foreignField: 'user',
 });
 
 export { UserSchema };
