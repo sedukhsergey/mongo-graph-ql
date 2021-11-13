@@ -10,6 +10,7 @@ import { CategoryModule } from './category/category.module';
 import { SeriesModule } from './series/series.module';
 import { LessonModule } from './lesson/lesson.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     CategoryModule,
     SeriesModule,
     LessonModule,
+    StudentModule,
   ],
   providers: [
     // {

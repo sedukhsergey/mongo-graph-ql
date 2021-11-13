@@ -1,7 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { AddressType } from "../../address/types/address.type";
-import { PostType } from "../../post/types/post.type";
-import { LessonType } from "../../lesson/types/lesson.type";
+import { AddressType } from '../../address/types/address.type';
+import { PostType } from '../../post/types/post.type';
 
 @ObjectType('User')
 export class UserType {
@@ -14,8 +13,8 @@ export class UserType {
   @Field()
   email: string;
 
-  @Field()
-  password: string;
+  @Field({ nullable: true })
+  password?: string;
 
   @Field()
   firstName: string;

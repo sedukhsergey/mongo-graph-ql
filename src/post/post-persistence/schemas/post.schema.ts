@@ -31,7 +31,7 @@ export class Post {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: Category.name }],
   })
   @Type(() => Category)
-  categories: Category;
+  categories: Category[];
 }
 
 const PostSchema = SchemaFactory.createForClass(Post);

@@ -11,36 +11,24 @@ import { LessonService } from './lesson.service';
 import { LessonType } from './types/lesson.type';
 import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
-import { UserType } from "../user/types/user.type";
+import { PatchLessonInput } from './dto/patch-lesson.input';
 
 @Resolver((of) => LessonType)
 export class LessonResolver {
-  constructor(private readonly lessonService: LessonService) {}
+  constructor(private readonly _lessonService: LessonService) {}
 
   @Query(() => [LessonType], { name: 'lessons' })
   findAll(@Args('searchParam', { type: () => String }) searchParam: string) {
-    return [
-      {
-        id: 23,
-        name: 'Math',
-        startDate: new Date().toISOString(),
-        endDate: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-      },
-    ];
+    return this._lessonService.findAll();
   }
 
   @Query(() => LessonType, { name: 'lesson' })
   findOne(@Args('id', { type: () => ID }) id: string) {
-    return {
-      id: 23,
-      name: 'Math',
-      startDate: new Date().toISOString(),
-      endDate: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-    };
+    return this._lessonService.findOne(id);
   }
 
   @ResolveField()
-  async students(@Parent() lesson: UserType) {
+  async students(@Parent() lesson: LessonType) {
     const { id } = lesson;
     return [
       {
@@ -49,40 +37,29 @@ export class LessonResolver {
         email: '1Slag',
       },
     ];
-    // return this.postsService.findAll({ authorId: id });
   }
 
   @Mutation(() => LessonType, { name: 'createLesson' })
   createLesson(
     @Args('createLessonInput') createLessonInput: CreateLessonInput,
   ) {
-    return {
-      id: 23,
-      name: 'Math',
-      startDate: new Date().toISOString(),
-      endDate: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-    };
+    return this._lessonService.create(createLessonInput);
   }
 
   @Mutation(() => LessonType, { name: 'updateLesson' })
   updateLesson(
     @Args('updateLessonInput') updateLessonInput: UpdateLessonInput,
   ) {
-    return {
-      id: 23,
-      name: 'Math',
-      startDate: new Date().toISOString(),
-      endDate: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-    };
+    return this._lessonService.update(updateLessonInput);
+  }
+
+  @Mutation(() => LessonType, { name: 'patchLesson' })
+  patchLesson(@Args('updateLessonInput') patchLessonInput: PatchLessonInput) {
+    return this._lessonService.patch(patchLessonInput);
   }
 
   @Mutation(() => LessonType, { name: 'removeLesson' })
   removeLesson(@Args('id', { type: () => ID }) id: string) {
-    return {
-      id: 23,
-      name: 'Math',
-      startDate: new Date().toISOString(),
-      endDate: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
-    };
+    return this._lessonService.remove(id);
   }
 }

@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { LessonPersistenceService } from './lesson-persistence/lesson-persistence.service';
+import { LessonDocument } from './entities/schemas/lesson.schema';
+import { IdDto } from '../dto/id.dto';
+import { PatchLessonInput } from './dto/patch-lesson.input';
 
 @Injectable()
 export class LessonService {
@@ -9,22 +12,31 @@ export class LessonService {
     private readonly lessonPersistenceService: LessonPersistenceService,
   ) {}
   create(createLessonInput: CreateLessonInput) {
-    return 'This action adds a new lesson';
+    return this.lessonPersistenceService.createLesson(createLessonInput)
   }
 
-  findAll() {
-    return `This action returns all lesson`;
+  async findAll(): Promise<LessonDocument[]> {
+    return this.lessonPersistenceService.findAllLessons();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lesson`;
+  async findOne(id: string): Promise<LessonDocument> {
+    const lesson: LessonDocument | null =
+      await this.lessonPersistenceService.findOneLessonById(id);
+    if (lesson === null) {
+      throw new BadRequestException('Lesson with this id does not exist');
+    }
+    return lesson;
   }
 
-  update(id: number, updateLessonInput: UpdateLessonInput) {
-    return `This action updates a #${id} lesson`;
+  async update(updateLessonInput: UpdateLessonInput): Promise<LessonDocument> {
+    return this.lessonPersistenceService.updateLesson(updateLessonInput);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lesson`;
+  async patch(patchLessonInput: PatchLessonInput): Promise<LessonDocument> {
+    return this.lessonPersistenceService.patchLesson(patchLessonInput);
+  }
+
+  async remove(id: string): Promise<LessonDocument> {
+    return this.lessonPersistenceService.delete(id);
   }
 }
