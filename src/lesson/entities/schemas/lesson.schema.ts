@@ -1,12 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import * as mongoose from "mongoose";
-import { User } from "../../../user/user-persistence/schemas/user.schema";
-import { Type } from "class-transformer";
-import { Student } from "../../../student/schemas/student.schema";
-// import * as mongoose from 'mongoose';
-// import { Type } from 'class-transformer';
-// import { User } from "../../../user/user-persistence/schemas/user.schema";
+import * as mongoose from 'mongoose';
+import { Type } from 'class-transformer';
+import { Student } from '../../../student/schemas/student.schema';
 
 export type LessonDocument = Lesson & Document;
 

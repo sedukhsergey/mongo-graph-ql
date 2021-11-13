@@ -20,7 +20,9 @@ export class LessonPersistenceService {
   }
 
   async findAllLessons(): Promise<LessonDocument[]> {
-    return this.lessonModel.find();
+    const lessons = await this.lessonModel.find();
+    console.log('lessons',lessons)
+    return lessons;
   }
 
   async findOneLessonById(id: string): Promise<LessonDocument> {
