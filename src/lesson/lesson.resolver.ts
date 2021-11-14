@@ -4,8 +4,6 @@ import {
   Mutation,
   Args,
   ID,
-  ResolveField,
-  Parent,
 } from '@nestjs/graphql';
 import { LessonService } from './lesson.service';
 import { LessonType } from './types/lesson.type';
@@ -25,18 +23,6 @@ export class LessonResolver {
   @Query(() => LessonType, { name: 'lesson' })
   findOne(@Args('id', { type: () => ID }) id: string) {
     return this._lessonService.findOne(id);
-  }
-
-  @ResolveField()
-  async students(@Parent() lesson: LessonType) {
-    // const { id } = lesson;
-    return [
-      {
-        id: '1asd',
-        name: '1Bob',
-        email: '1Slag',
-      },
-    ];
   }
 
   @Mutation(() => LessonType, { name: 'createLesson' })

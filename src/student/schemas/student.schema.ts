@@ -1,9 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import {
-  User,
-} from '../../user/user-persistence/schemas/user.schema';
-import * as mongoose from "mongoose";
+import { User } from '../../user/user-persistence/schemas/user.schema';
 
 export type StudentDocument = Student & Document;
 
@@ -20,13 +17,6 @@ export class Student {
   progress: number;
 
   user: User;
-
-  // ManyToMany
-  // @Prop({
-  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: Lesson.name }],
-  // })
-  // @Type(() => Lesson)
-  // lessons: Lesson[];
 }
 
 const StudentSchema = SchemaFactory.createForClass(Student);

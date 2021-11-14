@@ -6,11 +6,13 @@ import { DeleteManyDto } from '../../dto/delete-many.dto';
 import { UpdateLessonInput } from '../dto/update-lesson.input';
 import { PatchLessonInput } from '../dto/patch-lesson.input';
 import { CreateLessonInput } from '../dto/create-lesson.input';
+import { StudentPersistenceService } from '../../student/student-persistence/student-persistence.service';
 
 @Injectable()
 export class LessonPersistenceService {
   constructor(
     @InjectModel(Lesson.name) private lessonModel: Model<LessonDocument>,
+    private readonly studentPersistenceService: StudentPersistenceService,
   ) {}
 
   async deleteMany({ ids, session }: DeleteManyDto): Promise<void> {
@@ -22,7 +24,9 @@ export class LessonPersistenceService {
   }
 
   async findOneLessonById(id: string): Promise<LessonDocument> {
-    const lesson: LessonDocument | null = await this.lessonModel.findById(id);
+    const lesson: LessonDocument | null = await this.lessonModel
+      .findById(id)
+      .populate('students');
     if (lesson !== null) {
       return lesson;
     }
@@ -32,7 +36,11 @@ export class LessonPersistenceService {
   async createLesson(
     createLessonInput: CreateLessonInput,
   ): Promise<LessonDocument> {
+    const students = await this.studentPersistenceService.loadByIds(
+      createLessonInput.studentsIds,
+    );
     const createdLesson = await new this.lessonModel(createLessonInput);
+    createdLesson.students = students;
     return createdLesson.save();
   }
 

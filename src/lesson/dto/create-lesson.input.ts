@@ -10,4 +10,7 @@ export class CreateLessonInput {
 
   @Field({ description: 'End ISO date string' })
   endDate: string;
+
+  @Field(() => [String])
+  studentsIds: string[];
 }
