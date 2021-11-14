@@ -12,6 +12,7 @@ import { PostPersistenceService } from '../../post/post-persistence/post-persist
 import { DeleteUserDto } from '../dto/delete-user.dto';
 import { RegisterUserInput } from '../../authentication/dto/register-user-input';
 import { StudentDocument } from '../../student/schemas/student.schema';
+import { StudentType } from '../../student/types/student.type';
 
 @Injectable()
 export class UserPersistenceService {
@@ -61,6 +62,17 @@ export class UserPersistenceService {
 
   async getById(id: string): Promise<UserDocument> {
     const user: UserDocument = await this.userModel.findById(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
+  }
+
+  async getByStudent(student: StudentDocument): Promise<UserDocument> {
+    const user: UserDocument = await this.userModel.findOne({
+      student,
+    });
     if (!user) {
       throw new NotFoundException();
     }

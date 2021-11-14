@@ -1,8 +1,15 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
 import { Student, StudentDocument } from '../schemas/student.schema';
 import { CreateStudentInput } from '../dto/create-student.input';
+import { UpdateLessonInput } from '../../lesson/dto/update-lesson.input';
+import { LessonDocument } from '../../lesson/entities/schemas/lesson.schema';
+import { UpdateStudentInput } from '../dto/update-student.input';
 
 @Injectable()
 export class StudentPersistenceService {
@@ -24,16 +31,30 @@ export class StudentPersistenceService {
     }
   }
 
-  async getById(id: string, session?: ClientSession): Promise<StudentDocument> {
-    const student: StudentDocument = await this.studentModel
-      .findById(id)
-      .populate({
-        path: 'user',
-      })
-      .session(session || null);
+  async loadById(id: string): Promise<StudentDocument> {
+    const student: StudentDocument = await this.studentModel.findById(id);
     if (student) {
       return student;
     }
     return null;
+  }
+
+  async loaAll(): Promise<StudentDocument[]> {
+    return this.studentModel.find();
+  }
+
+  async updateStudent(
+    updateStudentInput: UpdateStudentInput,
+  ): Promise<StudentDocument> {
+    const student = await this.studentModel
+      .findByIdAndUpdate(updateStudentInput.id, {
+        progress: updateStudentInput.progress,
+      })
+      .setOptions({ overwrite: true, new: true});
+
+    if (student === null) {
+      throw new NotFoundException();
+    }
+    return student;
   }
 }

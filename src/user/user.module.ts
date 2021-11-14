@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserPersistenceModule } from './user-persistence/user-persistence.module';
 import { UserResolver } from './user.resolver';
+import { StudentPersistenceModule } from '../student/student-persistence/student-persistence.module';
 
 @Module({
-  imports: [UserPersistenceModule],
+  imports: [UserPersistenceModule, StudentPersistenceModule],
   providers: [UserService, UserResolver],
+  exports: [UserService],
 })
 export class UserModule {}

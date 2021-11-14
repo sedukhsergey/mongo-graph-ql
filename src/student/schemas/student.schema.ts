@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { User } from '../../user/user-persistence/schemas/user.schema';
+import {
+  User,
+} from '../../user/user-persistence/schemas/user.schema';
 
 export type StudentDocument = Student & Document;
 

@@ -50,7 +50,6 @@ export class User {
   })
   creditCardNumber?: string;
 
-  // Many to One
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Student.name })
   @Type(() => Student)
   student: Student;

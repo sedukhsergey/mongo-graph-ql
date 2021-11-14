@@ -40,13 +40,8 @@ export class StudentService {
         student,
         session,
       );
-      const createdStudent = await this.studentPersistenceService.getById(
-        student.id,
-        session,
-      );
-      createdStudent.user.password = null;
       await session.commitTransaction();
-      return createdStudent;
+      return student;
     } catch (err) {
       await session.abortTransaction();
       throw new InternalServerErrorException(err);
@@ -55,25 +50,22 @@ export class StudentService {
     }
   }
 
-  findAll() {
-    return `This action returns all student`;
+  async findAll(): Promise<StudentDocument[]> {
+    return this.studentPersistenceService.loaAll();
   }
 
   async findOne(id: string): Promise<StudentDocument> {
     const student: StudentDocument | null =
-      await this.studentPersistenceService.getById(id);
+      await this.studentPersistenceService.loadById(id);
     if (student === null) {
       throw new NotFoundException('Student with this id not found');
     }
-    student.user.password = null;
     return student;
   }
 
-  update(id: number, updateStudentInput: UpdateStudentInput) {
-    return `This action updates a #${id} student`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  async update(
+    updateStudentInput: UpdateStudentInput,
+  ): Promise<StudentDocument> {
+    return this.studentPersistenceService.updateStudent(updateStudentInput);
   }
 }
