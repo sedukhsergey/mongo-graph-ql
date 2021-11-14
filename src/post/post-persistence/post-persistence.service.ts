@@ -12,6 +12,7 @@ import { DeleteManyDto } from '../../dto/delete-many.dto';
 import { FindPostsByAuthorDto } from '../dto/find-posts-by-author.dto';
 import { SearchPostsDto } from '../dto/search-posts.dto';
 import { SearchPostsResultsDto } from '../dto/search-posts-results.dto';
+import { CreatePostInput } from "../dto/create-post.input";
 
 @Injectable()
 export class PostPersistenceService {
@@ -125,7 +126,7 @@ export class PostPersistenceService {
     return null;
   }
 
-  async create(postData: CreatePostBodyDto, author: User) {
+  async create(postData: CreatePostInput, author: User) {
     const createdPost = await new this.postModel({
       ...postData,
       author,

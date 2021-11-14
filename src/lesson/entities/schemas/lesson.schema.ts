@@ -20,11 +20,11 @@ export class Lesson {
   endDate: string;
 
   // ManyToMany
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Student.name }],
-  })
-  @Type(() => Student)
-  students: Student[];
+  // @Prop({
+  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: Student.name }],
+  // })
+  // @Type(() => Student)
+  // students: Student[];
 }
 
 const LessonSchema = SchemaFactory.createForClass(Lesson);

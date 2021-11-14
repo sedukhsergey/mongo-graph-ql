@@ -3,6 +3,7 @@ import { UserPersistenceService } from './user-persistence.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { PostPersistenceModule } from '../../post/post-persistence/post-persistence.module';
+import { StudentPersistenceModule } from '../../student/student-persistence/student-persistence.module';
 
 @Module({
   imports: [

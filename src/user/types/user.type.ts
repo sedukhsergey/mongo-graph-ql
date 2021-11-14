@@ -1,14 +1,12 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { AddressType } from '../../address/types/address.type';
 import { PostType } from '../../post/types/post.type';
+import { StudentType } from '../../student/types/student.type';
 
 @ObjectType('User')
 export class UserType {
   @Field((type) => ID)
   id: string;
-
-  @Field()
-  name: string;
 
   @Field()
   email: string;
@@ -33,4 +31,7 @@ export class UserType {
 
   @Field((type) => [PostType])
   posts: PostType[];
+
+  @Field((type) => StudentType)
+  student: StudentType;
 }

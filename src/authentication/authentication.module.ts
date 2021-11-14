@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { UserPersistenceModule } from '../user/user-persistence/user-persistence.module';
 import { LocalStrategy } from './local.strategy';
-import { AuthenticationController } from './authentication.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { AuthenticationResolver } from './authentication.resolver';
+import { StudentPersistenceModule } from "../student/student-persistence/student-persistence.module";
 
 @Module({
   imports: [
     UserPersistenceModule,
+    StudentPersistenceModule,
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -22,8 +24,12 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
-  providers: [AuthenticationService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthenticationService,
+    LocalStrategy,
+    JwtStrategy,
+    AuthenticationResolver,
+  ],
   exports: [AuthenticationService],
-  controllers: [AuthenticationController],
 })
 export class AuthenticationModule {}

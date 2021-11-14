@@ -21,7 +21,6 @@ export class LessonPersistenceService {
 
   async findAllLessons(): Promise<LessonDocument[]> {
     const lessons = await this.lessonModel.find();
-    console.log('lessons',lessons)
     return lessons;
   }
 

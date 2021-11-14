@@ -12,6 +12,14 @@ export class UserService {
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
+  async loadUserById(id: string): Promise<UserDocument> {
+    return this.userPersistenceService.getById(id);
+  }
+
+  async loadUserByEmail(email: string): Promise<UserDocument> {
+    return this.userPersistenceService.getByEmail(email);
+  }
+
   async loadAllUsers(): Promise<UserDocument[]> {
     return this.userPersistenceService.loadAllUsers();
   }

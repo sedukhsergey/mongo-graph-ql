@@ -6,7 +6,10 @@ import {
   AddressSchema,
 } from '../../../address/schemas/address.schema';
 import { Post } from '../../../post/post-persistence/schemas/post.schema';
-import { Student } from "../../../student/schemas/student.schema";
+import {
+  Student,
+  StudentSchema,
+} from '../../../student/schemas/student.schema';
 
 export type UserDocument = User & Document;
 
@@ -21,9 +24,6 @@ export class User {
 
   @Prop({ unique: true })
   email: string;
-
-  @Prop()
-  name: string;
 
   @Prop()
   @Exclude()
@@ -50,6 +50,11 @@ export class User {
   })
   creditCardNumber?: string;
 
+  // // One to One
+  // @Prop({ type: StudentSchema })
+  // @Type(() => Student)
+  student: Student;
+
   // One to One
   @Prop({ type: AddressSchema })
   @Type(() => Address)
@@ -57,7 +62,6 @@ export class User {
 
   posts: Post[];
 
-  student: Student;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
@@ -83,6 +87,7 @@ UserSchema.virtual('student', {
   ref: 'Student',
   localField: '_id',
   foreignField: 'user',
+  justOne: true
 });
 
 export { UserSchema };

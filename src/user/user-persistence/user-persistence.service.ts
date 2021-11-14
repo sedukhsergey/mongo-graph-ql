@@ -6,11 +6,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { ClientSession, Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { PostPersistenceService } from '../../post/post-persistence/post-persistence.service';
 import { DeleteUserDto } from '../dto/delete-user.dto';
+import { RegisterUserInput } from '../../authentication/dto/register-user-input';
+import { StudentDocument } from '../../student/schemas/student.schema';
 
 @Injectable()
 export class UserPersistenceService {
@@ -24,12 +25,16 @@ export class UserPersistenceService {
   }
 
   async getByEmail(email: string): Promise<UserDocument> {
-    const user = await this.userModel.findOne({ email }).populate({
-      path: 'posts',
-      populate: {
-        path: 'categories',
-      },
-    });
+    const user = await this.userModel
+      .findOne({ email })
+      .populate({
+        path: 'posts',
+        populate: {
+          path: 'categories',
+        },
+      })
+      .populate('student');
+    console.log('JSON', user.toJSON());
     if (user) {
       return user;
     }
@@ -64,8 +69,17 @@ export class UserPersistenceService {
     return user;
   }
 
-  async create(userData: CreateUserDto): Promise<UserDocument> {
-    const createdUser = new this.userModel(userData);
-    return createdUser.save();
+  async create(
+    userData: RegisterUserInput,
+    session: ClientSession,
+  ): Promise<UserDocument> {
+    try {
+      const createdUser = new this.userModel({
+        ...userData,
+      });
+      return await createdUser.save({ session });
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 }

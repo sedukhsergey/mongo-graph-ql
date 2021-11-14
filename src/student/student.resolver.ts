@@ -3,25 +3,29 @@ import { StudentService } from './student.service';
 import { StudentType } from './types/student.type';
 import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Resolver(() => StudentType)
 export class StudentResolver {
-  constructor(private readonly studentService: StudentService) {}
+  constructor(
+    private readonly studentService: StudentService,
+    private readonly authenticationService: AuthenticationService,
+  ) {}
 
-  @Mutation(() => StudentType)
+  @Mutation(() => StudentType, { name: 'createStudent' })
   createStudent(
     @Args('createStudentInput') createStudentInput: CreateStudentInput,
   ) {
     return this.studentService.create(createStudentInput);
   }
 
-  @Query(() => [StudentType], { name: 'student' })
+  @Query(() => [StudentType], { name: 'students' })
   findAll() {
     return this.studentService.findAll();
   }
 
   @Query(() => StudentType, { name: 'student' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id') id: string) {
     return this.studentService.findOne(id);
   }
 
