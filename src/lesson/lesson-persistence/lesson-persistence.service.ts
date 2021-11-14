@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Lesson, LessonDocument } from '../entities/schemas/lesson.schema';
+import { Lesson, LessonDocument } from '../schemas/lesson.schema';
 import { DeleteManyDto } from '../../dto/delete-many.dto';
 import { UpdateLessonInput } from '../dto/update-lesson.input';
 import { PatchLessonInput } from '../dto/patch-lesson.input';
@@ -18,8 +18,7 @@ export class LessonPersistenceService {
   }
 
   async findAllLessons(): Promise<LessonDocument[]> {
-    const lessons = await this.lessonModel.find();
-    return lessons;
+    return this.lessonModel.find();
   }
 
   async findOneLessonById(id: string): Promise<LessonDocument> {

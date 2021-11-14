@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { LessonPersistenceService } from './lesson-persistence/lesson-persistence.service';
-import { LessonDocument } from './entities/schemas/lesson.schema';
+import { LessonDocument } from './schemas/lesson.schema';
 import { PatchLessonInput } from './dto/patch-lesson.input';
 
 @Injectable()

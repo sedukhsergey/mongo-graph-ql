@@ -19,7 +19,6 @@ export class LessonResolver {
 
   @Query(() => [LessonType], { name: 'lessons' })
   findAll() {
-    // @Args('searchParam', { type: () => String }) searchParam: string
     return this._lessonService.findAll();
   }
 

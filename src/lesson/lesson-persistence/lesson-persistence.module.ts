@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LessonPersistenceService } from './lesson-persistence.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Lesson, LessonSchema } from '../entities/schemas/lesson.schema';
+import { Lesson, LessonSchema } from '../schemas/lesson.schema';
 
 @Module({
   imports: [

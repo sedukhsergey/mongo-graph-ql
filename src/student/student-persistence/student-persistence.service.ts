@@ -8,7 +8,7 @@ import { ClientSession, Model } from 'mongoose';
 import { Student, StudentDocument } from '../schemas/student.schema';
 import { CreateStudentInput } from '../dto/create-student.input';
 import { UpdateLessonInput } from '../../lesson/dto/update-lesson.input';
-import { LessonDocument } from '../../lesson/entities/schemas/lesson.schema';
+import { LessonDocument } from '../../lesson/schemas/lesson.schema';
 import { UpdateStudentInput } from '../dto/update-student.input';
 
 @Injectable()

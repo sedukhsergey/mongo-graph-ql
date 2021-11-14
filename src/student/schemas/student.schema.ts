@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import {
   User,
 } from '../../user/user-persistence/schemas/user.schema';
+import * as mongoose from "mongoose";
 
 export type StudentDocument = Student & Document;
 
@@ -20,7 +21,7 @@ export class Student {
 
   user: User;
 
-  // // ManyToMany
+  // ManyToMany
   // @Prop({
   //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: Lesson.name }],
   // })
