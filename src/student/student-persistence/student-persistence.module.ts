@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { StudentPersistenceService } from './student-persistence.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Student, StudentSchema } from "../schemas/student.schema";
+import { Student, StudentSchema } from '../schemas/student.schema';
 
 @Module({
   imports: [

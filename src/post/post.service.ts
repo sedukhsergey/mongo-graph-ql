@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Post, PostDocument } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
-import { CreatePostBodyDto } from './dto/create-post-body.dto';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
-import { User } from '../user/user-persistence/schemas/user.schema';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
 import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
 import { FindPostsByAuthorDto } from './dto/find-posts-by-author.dto';
 import { SearchPostsDto } from './dto/search-posts.dto';
 import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 import { CreatePostInput } from './dto/create-post.input';
-import { PostType } from './types/post.type';
 
 @Injectable()
 export class PostService {

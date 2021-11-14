@@ -3,7 +3,6 @@ import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { LessonPersistenceService } from './lesson-persistence/lesson-persistence.service';
 import { LessonDocument } from './entities/schemas/lesson.schema';
-import { IdDto } from '../dto/id.dto';
 import { PatchLessonInput } from './dto/patch-lesson.input';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class LessonService {
     private readonly lessonPersistenceService: LessonPersistenceService,
   ) {}
   create(createLessonInput: CreateLessonInput) {
-    return this.lessonPersistenceService.createLesson(createLessonInput)
+    return this.lessonPersistenceService.createLesson(createLessonInput);
   }
 
   async findAll(): Promise<LessonDocument[]> {

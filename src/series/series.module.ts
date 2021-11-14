@@ -6,6 +6,6 @@ import { SeriesPersistenceModule } from './series-persistence/series-persistence
 @Module({
   controllers: [SeriesController],
   providers: [SeriesService],
-  imports: [SeriesPersistenceModule]
+  imports: [SeriesPersistenceModule],
 })
 export class SeriesModule {}

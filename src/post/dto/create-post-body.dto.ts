@@ -1,7 +1,6 @@
 import { IsString, IsNotEmpty, IsArray, IsOptional } from 'class-validator';
 
 export class CreatePostBodyDto {
-
   @IsOptional()
   @IsString()
   @IsNotEmpty()

@@ -5,7 +5,7 @@ import { StudentType } from '../../student/types/student.type';
 
 @ObjectType('User')
 export class UserType {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
   @Field()
@@ -26,12 +26,12 @@ export class UserType {
   @Field()
   creditCardNumber: string;
 
-  @Field((type) => AddressType)
+  @Field(() => AddressType)
   address: AddressType;
 
-  @Field((type) => [PostType])
+  @Field(() => [PostType])
   posts: PostType[];
 
-  @Field((type) => StudentType)
+  @Field(() => StudentType)
   student: StudentType;
 }

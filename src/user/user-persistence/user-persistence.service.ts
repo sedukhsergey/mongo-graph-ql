@@ -34,7 +34,6 @@ export class UserPersistenceService {
         },
       })
       .populate('student');
-    console.log('JSON', user.toJSON());
     if (user) {
       return user;
     }
@@ -71,11 +70,13 @@ export class UserPersistenceService {
 
   async create(
     userData: RegisterUserInput,
+    student: StudentDocument,
     session: ClientSession,
   ): Promise<UserDocument> {
     try {
       const createdUser = new this.userModel({
         ...userData,
+        student,
       });
       return await createdUser.save({ session });
     } catch (err) {

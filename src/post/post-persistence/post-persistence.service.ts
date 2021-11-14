@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
 import { Model } from 'mongoose';
-import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { User } from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
@@ -12,7 +11,7 @@ import { DeleteManyDto } from '../../dto/delete-many.dto';
 import { FindPostsByAuthorDto } from '../dto/find-posts-by-author.dto';
 import { SearchPostsDto } from '../dto/search-posts.dto';
 import { SearchPostsResultsDto } from '../dto/search-posts-results.dto';
-import { CreatePostInput } from "../dto/create-post.input";
+import { CreatePostInput } from '../dto/create-post.input';
 
 @Injectable()
 export class PostPersistenceService {

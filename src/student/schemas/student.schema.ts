@@ -1,16 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { User, UserSchema } from "../../user/user-persistence/schemas/user.schema";
-import { Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-import * as mongoose from "mongoose";
-// import { Type } from 'class-transformer';
-// import { Lesson } from '../../lesson/entities/schemas/lesson.schema';
-// import {
-//   User,
-//   UserSchema,
-// } from '../../user/user-persistence/schemas/user.schema';
-// import * as mongoose from 'mongoose';
+import { User } from '../../user/user-persistence/schemas/user.schema';
 
 export type StudentDocument = Student & Document;
 
@@ -26,9 +16,6 @@ export class Student {
   @Prop()
   progress: number;
 
-  // Many to One
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
-  @Type(() => User)
   user: User;
 
   // // ManyToMany
@@ -47,10 +34,11 @@ const StudentSchema = SchemaFactory.createForClass(Student);
 //   foreignField: 'lessons',
 // });
 
-// StudentSchema.virtual('user', {
-//   ref: 'User',
-//   localField: '_id',
-//   foreignField: 'student',
-// });
+StudentSchema.virtual('user', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'student',
+  justOne: true,
+});
 
 export { StudentSchema };

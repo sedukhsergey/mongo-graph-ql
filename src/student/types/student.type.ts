@@ -3,12 +3,12 @@ import { UserType } from '../../user/types/user.type';
 
 @ObjectType('Student')
 export class StudentType {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   progress: number;
 
-  @Field((type) => UserType)
+  @Field(() => UserType)
   user: UserType;
 }

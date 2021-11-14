@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
 import { StudentDocument } from './schemas/student.schema';
@@ -24,23 +28,25 @@ export class StudentService {
     const session = await this.connection.startSession();
     try {
       session.startTransaction();
-
-      const createdUser = await this.userPersistence.create(
+      const student = await this.studentPersistenceService.create(
+        createStudentInput,
+        session,
+      );
+      await this.userPersistence.create(
         {
           ...createStudentInput,
           password: hashedPassword,
         },
+        student,
         session,
       );
-
-      const student = await this.studentPersistenceService.create(
-        createStudentInput,
-        createdUser,
+      const createdStudent = await this.studentPersistenceService.getById(
+        student.id,
         session,
       );
-      student.user.password = null;
+      createdStudent.user.password = null;
       await session.commitTransaction();
-      return student;
+      return createdStudent;
     } catch (err) {
       await session.abortTransaction();
       throw new InternalServerErrorException(err);
@@ -54,7 +60,13 @@ export class StudentService {
   }
 
   async findOne(id: string): Promise<StudentDocument> {
-    return this.studentPersistenceService.getById(id);
+    const student: StudentDocument | null =
+      await this.studentPersistenceService.getById(id);
+    if (student === null) {
+      throw new NotFoundException('Student with this id not found');
+    }
+    student.user.password = null;
+    return student;
   }
 
   update(id: number, updateStudentInput: UpdateStudentInput) {

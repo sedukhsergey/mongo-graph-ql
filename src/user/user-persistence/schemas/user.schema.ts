@@ -8,8 +8,8 @@ import {
 import { Post } from '../../../post/post-persistence/schemas/post.schema';
 import {
   Student,
-  StudentSchema,
 } from '../../../student/schemas/student.schema';
+import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -50,9 +50,9 @@ export class User {
   })
   creditCardNumber?: string;
 
-  // // One to One
-  // @Prop({ type: StudentSchema })
-  // @Type(() => Student)
+  // Many to One
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Student.name })
+  @Type(() => Student)
   student: Student;
 
   // One to One
@@ -61,7 +61,6 @@ export class User {
   address: Address;
 
   posts: Post[];
-
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
@@ -83,11 +82,11 @@ UserSchema.virtual('posts', {
   foreignField: 'author',
 });
 
-UserSchema.virtual('student', {
-  ref: 'Student',
-  localField: '_id',
-  foreignField: 'user',
-  justOne: true
-});
+// UserSchema.virtual('student', {
+//   ref: 'Student',
+//   localField: '_id',
+//   foreignField: 'user',
+//   justOne: true
+// });
 
 export { UserSchema };

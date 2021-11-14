@@ -13,12 +13,13 @@ import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { PatchLessonInput } from './dto/patch-lesson.input';
 
-@Resolver((of) => LessonType)
+@Resolver(() => LessonType)
 export class LessonResolver {
   constructor(private readonly _lessonService: LessonService) {}
 
   @Query(() => [LessonType], { name: 'lessons' })
-  findAll(@Args('searchParam', { type: () => String }) searchParam: string) {
+  findAll() {
+    // @Args('searchParam', { type: () => String }) searchParam: string
     return this._lessonService.findAll();
   }
 
@@ -29,7 +30,7 @@ export class LessonResolver {
 
   @ResolveField()
   async students(@Parent() lesson: LessonType) {
-    const { id } = lesson;
+    // const { id } = lesson;
     return [
       {
         id: '1asd',

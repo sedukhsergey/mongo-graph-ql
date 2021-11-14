@@ -21,6 +21,6 @@ export class RegisterUserInput {
   @Field()
   creditCardNumber: string;
 
-  @Field((type) => RegisterAddressInput)
+  @Field(() => RegisterAddressInput)
   address: RegisterAddressInput;
 }

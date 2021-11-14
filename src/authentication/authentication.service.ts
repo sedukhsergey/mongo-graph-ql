@@ -1,21 +1,11 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import * as bcrypt from 'bcrypt';
 import * as mongoose from 'mongoose';
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import {
-  User,
-  UserDocument,
-} from '../user/user-persistence/schemas/user.schema';
+import { User } from '../user/user-persistence/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayloadDto } from './dto/token-payload.dto';
-import { RegisterUserInput } from './dto/register-user-input';
 import { InjectConnection } from '@nestjs/mongoose';
 import { StudentPersistenceService } from '../student/student-persistence/student-persistence.service';
 

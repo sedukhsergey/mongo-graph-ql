@@ -3,7 +3,7 @@ import { UserType } from '../../user/types/user.type';
 
 @ObjectType('Lesson')
 export class LessonType {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
   @Field()
@@ -15,6 +15,6 @@ export class LessonType {
   @Field()
   endDate: string;
 
-  @Field((type) => [UserType])
+  @Field(() => [UserType])
   students: UserType[];
 }

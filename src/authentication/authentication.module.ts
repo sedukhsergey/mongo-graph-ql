@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthenticationResolver } from './authentication.resolver';
-import { StudentPersistenceModule } from "../student/student-persistence/student-persistence.module";
+import { StudentPersistenceModule } from '../student/student-persistence/student-persistence.module';
 
 @Module({
   imports: [
