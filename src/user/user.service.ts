@@ -4,7 +4,6 @@ import { UserDocument } from './user-persistence/schemas/user.schema';
 import { InjectConnection } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { IdDto } from '../dto/id.dto';
-import { StudentDocument } from '../student/schemas/student.schema';
 import { StudentType } from '../student/types/student.type';
 import { StudentPersistenceService } from '../student/student-persistence/student-persistence.service';
 

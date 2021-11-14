@@ -52,7 +52,7 @@ export class StudentPersistenceService {
       .findByIdAndUpdate(updateStudentInput.id, {
         progress: updateStudentInput.progress,
       })
-      .setOptions({ overwrite: true, new: true});
+      .setOptions({ overwrite: true, new: true });
 
     if (student === null) {
       throw new NotFoundException();

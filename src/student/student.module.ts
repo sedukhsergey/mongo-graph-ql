@@ -4,7 +4,7 @@ import { StudentResolver } from './student.resolver';
 import { StudentPersistenceModule } from './student-persistence/student-persistence.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { UserPersistenceModule } from '../user/user-persistence/user-persistence.module';
-import { UserModule } from "../user/user.module";
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -14,5 +14,6 @@ import { UserModule } from "../user/user.module";
     UserModule,
   ],
   providers: [StudentResolver, StudentService],
+  exports: [StudentService],
 })
 export class StudentModule {}

@@ -6,9 +6,7 @@ import {
   AddressSchema,
 } from '../../../address/schemas/address.schema';
 import { Post } from '../../../post/post-persistence/schemas/post.schema';
-import {
-  Student,
-} from '../../../student/schemas/student.schema';
+import { Student } from '../../../student/schemas/student.schema';
 import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;

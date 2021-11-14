@@ -2,7 +2,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UserType } from './types/user.type';
 import { UserService } from './user.service';
 
-@Resolver((of) => UserType)
+@Resolver(() => UserType)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 

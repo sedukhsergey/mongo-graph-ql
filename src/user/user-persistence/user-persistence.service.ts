@@ -12,7 +12,6 @@ import { PostPersistenceService } from '../../post/post-persistence/post-persist
 import { DeleteUserDto } from '../dto/delete-user.dto';
 import { RegisterUserInput } from '../../authentication/dto/register-user-input';
 import { StudentDocument } from '../../student/schemas/student.schema';
-import { StudentType } from '../../student/types/student.type';
 
 @Injectable()
 export class UserPersistenceService {

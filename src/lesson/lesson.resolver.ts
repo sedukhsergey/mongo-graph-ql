@@ -4,16 +4,22 @@ import {
   Mutation,
   Args,
   ID,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { LessonService } from './lesson.service';
 import { LessonType } from './types/lesson.type';
 import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { PatchLessonInput } from './dto/patch-lesson.input';
+import { StudentService } from '../student/student.service';
 
 @Resolver(() => LessonType)
 export class LessonResolver {
-  constructor(private readonly _lessonService: LessonService) {}
+  constructor(
+    private readonly _lessonService: LessonService,
+    private readonly _studentService: StudentService,
+  ) {}
 
   @Query(() => [LessonType], { name: 'lessons' })
   findAll() {
@@ -23,6 +29,11 @@ export class LessonResolver {
   @Query(() => LessonType, { name: 'lesson' })
   findOne(@Args('id', { type: () => ID }) id: string) {
     return this._lessonService.findOne(id);
+  }
+
+  @ResolveField()
+  async students(@Parent() lesson: LessonType) {
+    return this._studentService.findByIds(lesson.students.map((i) => i.id));
   }
 
   @Mutation(() => LessonType, { name: 'createLesson' })

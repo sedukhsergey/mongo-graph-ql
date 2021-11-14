@@ -54,6 +54,10 @@ export class StudentService {
     return this.studentPersistenceService.loaAll();
   }
 
+  async findByIds(ids: string[]): Promise<StudentDocument[]> {
+    return this.studentPersistenceService.loadByIds(ids);
+  }
+
   async findOne(id: string): Promise<StudentDocument> {
     const student: StudentDocument | null =
       await this.studentPersistenceService.loadById(id);
