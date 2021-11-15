@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post, PostDocument } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
 import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
-import { FindPostsByAuthorDto } from './dto/find-posts-by-author.dto';
 import { SearchPostsDto } from './dto/search-posts.dto';
 import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 import { CreatePostInput } from './dto/create-post.input';
+import { UserDocument } from '../user/user-persistence/schemas/user.schema';
 
 @Injectable()
 export class PostService {
@@ -16,11 +16,16 @@ export class PostService {
     private readonly _userPersistenceService: UserPersistenceService,
   ) {}
 
-  async findAllByAuthor({ user }: FindPostsByAuthorDto): Promise<Post[]> {
-    return this._postPersistence.findAllByAuthor({ user });
+  async findAllByAuthor(userId: string): Promise<Post[]> {
+    const user: UserDocument | null =
+      await this._userPersistenceService.getById(userId);
+    if (user === null) {
+      throw new NotFoundException('user with this id does not exist');
+    }
+    return this._postPersistence.findAllByAuthor(user);
   }
 
-  async findOne(id): Promise<Post> {
+  async findOne(id): Promise<PostDocument> {
     return this._postPersistence.findOne(id);
   }
 

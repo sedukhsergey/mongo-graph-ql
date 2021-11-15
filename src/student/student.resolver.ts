@@ -40,7 +40,7 @@ export class StudentResolver {
 
   @ResolveField()
   async user(@Parent() student: StudentType) {
-    return this.userService.loadUserByStudent(student);
+    return this.userService.loadUserByStudent(student.id);
   }
 
   @Mutation(() => StudentType, { name: 'updateStudent' })

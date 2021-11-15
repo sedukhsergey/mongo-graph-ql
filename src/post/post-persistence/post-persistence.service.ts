@@ -2,13 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
 import { Model } from 'mongoose';
-import { User } from '../../user/user-persistence/schemas/user.schema';
+import {
+  User,
+  UserDocument,
+} from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
 import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
 import { Category } from '../../category/category-persistence/schemas/category.schema';
 import { DeleteManyDto } from '../../dto/delete-many.dto';
-import { FindPostsByAuthorDto } from '../dto/find-posts-by-author.dto';
 import { SearchPostsDto } from '../dto/search-posts.dto';
 import { SearchPostsResultsDto } from '../dto/search-posts-results.dto';
 import { CreatePostInput } from '../dto/create-post.input';
@@ -104,7 +106,7 @@ export class PostPersistenceService {
     return { results, count };
   }
 
-  async findAllByAuthor({ user }: FindPostsByAuthorDto): Promise<Post[]> {
+  async findAllByAuthor(user: UserDocument): Promise<Post[]> {
     return this.postModel
       .find({
         author: user,
@@ -114,8 +116,8 @@ export class PostPersistenceService {
       .populate('categories');
   }
 
-  async findOne(id): Promise<Post> {
-    const post: Post | null = await this.postModel
+  async findOne(id): Promise<PostDocument> {
+    const post: PostDocument | null = await this.postModel
       .findById(id)
       .populate('author', 'email name')
       .populate('categories');

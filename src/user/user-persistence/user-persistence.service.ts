@@ -59,13 +59,13 @@ export class UserPersistenceService {
     }
   }
 
-  async getById(id: string): Promise<UserDocument> {
+  async getById(id: string): Promise<UserDocument | null> {
     const user: UserDocument = await this.userModel.findById(id);
-    if (!user) {
-      throw new NotFoundException();
+    if (user) {
+      return user;
     }
 
-    return user;
+    return null;
   }
 
   async getByStudent(student: StudentDocument): Promise<UserDocument> {

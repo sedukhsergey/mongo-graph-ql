@@ -4,7 +4,6 @@ import { UserDocument } from './user-persistence/schemas/user.schema';
 import { InjectConnection } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { IdDto } from '../dto/id.dto';
-import { StudentType } from '../student/types/student.type';
 import { StudentPersistenceService } from '../student/student-persistence/student-persistence.service';
 
 @Injectable()
@@ -19,11 +18,9 @@ export class UserService {
     return this.userPersistenceService.getById(id);
   }
 
-  async loadUserByStudent(student: StudentType): Promise<UserDocument> {
-    const newStudent = await this.studentPersistenceService.loadById(
-      student.id,
-    );
-    const user = await this.userPersistenceService.getByStudent(newStudent);
+  async loadUserByStudent(id: string): Promise<UserDocument> {
+    const student = await this.studentPersistenceService.loadById(id);
+    const user = await this.userPersistenceService.getByStudent(student);
     user.password = null;
     return user;
   }
