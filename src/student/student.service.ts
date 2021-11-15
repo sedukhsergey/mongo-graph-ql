@@ -12,7 +12,6 @@ import * as bcrypt from 'bcrypt';
 import { StudentPersistenceService } from './student-persistence/student-persistence.service';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import { LessonPersistenceService } from '../lesson/lesson-persistence/lesson-persistence.service';
-import { LessonDocument } from '../lesson/schemas/lesson.schema';
 
 @Injectable()
 export class StudentService {
@@ -51,15 +50,6 @@ export class StudentService {
     } finally {
       await session.endSession();
     }
-  }
-
-  async loadLessonsByStudent(studentId: string): Promise<LessonDocument[]> {
-    const student: StudentDocument | null =
-      await this.studentPersistenceService.loadById(studentId);
-    if (student === null) {
-      throw new NotFoundException('Student with this id does not exist');
-    }
-    return this.lessonPersistenceService.loadLessonsByStudent([student]);
   }
 
   async findAll(): Promise<StudentDocument[]> {

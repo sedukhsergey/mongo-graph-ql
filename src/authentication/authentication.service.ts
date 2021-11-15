@@ -19,12 +19,9 @@ export class AuthenticationService {
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
-  public getCookieWithJwtToken(userId: string) {
+  public getJwtToken(userId: string): string {
     const payload: TokenPayloadDto = { userId };
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_EXPIRATION_TIME',
-    )}`;
+    return this.jwtService.sign(payload);
   }
 
   public getCookieForLogOut() {

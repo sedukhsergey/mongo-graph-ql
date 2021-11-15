@@ -5,6 +5,7 @@ import {
   Args,
   ResolveField,
   Parent,
+  Context,
 } from '@nestjs/graphql';
 import { StudentService } from './student.service';
 import { StudentType } from './types/student.type';
@@ -12,11 +13,14 @@ import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { UserService } from '../user/user.service';
+import { LessonPersistenceService } from '../lesson/lesson-persistence/lesson-persistence.service';
+import { StudentDocument } from './schemas/student.schema';
 
 @Resolver(() => StudentType)
 export class StudentResolver {
   constructor(
     private readonly studentService: StudentService,
+    private readonly lessonPersistenceService: LessonPersistenceService,
     private readonly authenticationService: AuthenticationService,
     private readonly userService: UserService,
   ) {}
@@ -34,8 +38,9 @@ export class StudentResolver {
   }
 
   @Query(() => StudentType, { name: 'student' })
-  findOne(@Args('id') id: string) {
-    return this.studentService.findOne(id);
+  findOne(@Context() context: any) {
+    const user = context.req.user;
+    return this.studentService.findOne(user.student.valueOf());
   }
 
   @ResolveField()
@@ -44,8 +49,8 @@ export class StudentResolver {
   }
 
   @ResolveField()
-  async lessons(@Parent() student: StudentType) {
-    return this.studentService.loadLessonsByStudent(student.id);
+  async lessons(@Parent() student: StudentDocument) {
+    return this.lessonPersistenceService.loadLessonsByStudent([student]);
   }
 
   @Mutation(() => StudentType, { name: 'updateStudent' })
