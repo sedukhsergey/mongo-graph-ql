@@ -5,12 +5,14 @@ import { StudentPersistenceModule } from './student-persistence/student-persiste
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { UserPersistenceModule } from '../user/user-persistence/user-persistence.module';
 import { UserModule } from '../user/user.module';
+import { LessonPersistenceModule } from '../lesson/lesson-persistence/lesson-persistence.module';
 
 @Module({
   imports: [
     StudentPersistenceModule,
     AuthenticationModule,
     UserPersistenceModule,
+    LessonPersistenceModule,
     UserModule,
   ],
   providers: [StudentResolver, StudentService],

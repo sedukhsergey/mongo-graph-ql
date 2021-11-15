@@ -7,6 +7,7 @@ import { UpdateLessonInput } from '../dto/update-lesson.input';
 import { PatchLessonInput } from '../dto/patch-lesson.input';
 import { CreateLessonInput } from '../dto/create-lesson.input';
 import { StudentPersistenceService } from '../../student/student-persistence/student-persistence.service';
+import { StudentDocument } from '../../student/schemas/student.schema';
 
 @Injectable()
 export class LessonPersistenceService {
@@ -17,6 +18,14 @@ export class LessonPersistenceService {
 
   async deleteMany({ ids, session }: DeleteManyDto): Promise<void> {
     await this.lessonModel.deleteMany({ _id: ids }).session(session);
+  }
+
+  async loadLessonsByStudent(students: StudentDocument[]) {
+    return this.lessonModel.find({
+      students: {
+        $in: students,
+      },
+    });
   }
 
   async findAllLessons(): Promise<LessonDocument[]> {

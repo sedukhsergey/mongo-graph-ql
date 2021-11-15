@@ -33,7 +33,8 @@ export class LessonResolver {
 
   @ResolveField()
   async students(@Parent() lesson: LessonType) {
-    return this._studentService.findByIds(lesson.students.map((i) => i.id));
+    const idsList: any[] = lesson.students.map((i) => i.valueOf());
+    return this._studentService.findByIds(idsList);
   }
 
   @Mutation(() => LessonType, { name: 'createLesson' })
