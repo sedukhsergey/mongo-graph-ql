@@ -12,6 +12,7 @@ import { PostPersistenceService } from '../../post/post-persistence/post-persist
 import { DeleteUserDto } from '../dto/delete-user.dto';
 import { RegisterUserInput } from '../../authentication/dto/register-user-input';
 import { StudentDocument } from '../../student/schemas/student.schema';
+import { Post } from '../../post/post-persistence/schemas/post.schema';
 
 @Injectable()
 export class UserPersistenceService {
@@ -24,16 +25,20 @@ export class UserPersistenceService {
     return this.userModel.find(null, { password: 0, address: { city: 0 } });
   }
 
+  async loadUserPostsByUserId(userId: string): Promise<Post[]> {
+    const user = await this.userModel.findById(userId).populate('posts');
+    return user.posts;
+  }
+
   async getByEmail(email: string): Promise<UserDocument> {
-    const user = await this.userModel
-      .findOne({ email })
-      .populate({
-        path: 'posts',
-        populate: {
-          path: 'categories',
-        },
-      })
-      .populate('student');
+    const user = await this.userModel.findOne({ email });
+    // .populate({
+    //   path: 'posts',
+    //   populate: {
+    //     path: 'categories',
+    //   },
+    // })
+    // .populate('student');
     if (user) {
       return user;
     }

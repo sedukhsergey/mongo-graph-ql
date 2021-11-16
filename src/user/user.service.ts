@@ -5,6 +5,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { IdDto } from '../dto/id.dto';
 import { StudentPersistenceService } from '../student/student-persistence/student-persistence.service';
+import { Post } from '../post/post-persistence/schemas/post.schema';
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,10 @@ export class UserService {
 
   async loadUserByEmail(email: string): Promise<UserDocument> {
     return this.userPersistenceService.getByEmail(email);
+  }
+
+  async loadUserPosts(userId: string): Promise<Post[]> {
+    return this.userPersistenceService.loadUserPostsByUserId(userId);
   }
 
   async loadAllUsers(): Promise<UserDocument[]> {

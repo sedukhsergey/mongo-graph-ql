@@ -1,14 +1,10 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { UserType } from './types/user.type';
 import { UserService } from './user.service';
-import { PostService } from '../post/post.service';
 
 @Resolver(() => UserType)
 export class UserResolver {
-  constructor(
-    private readonly userService: UserService,
-    private readonly postService: PostService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Query(() => UserType, { name: 'getUserByEmail' })
   getUserByEmail(@Args('email') email: string) {
@@ -17,6 +13,6 @@ export class UserResolver {
 
   @ResolveField()
   async posts(@Parent() user: UserType) {
-    return this.postService.findAll(user.id);
+    return this.userService.loadUserPosts(user.id);
   }
 }
