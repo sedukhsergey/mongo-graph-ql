@@ -1,0 +1,186 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: ID!
+  name: String!
+  posts: [Post!]!
+}
+
+type Address {
+  id: ID!
+  city: String!
+  street: String!
+}
+
+type Lesson {
+  id: ID!
+  name: String!
+  startDate: String!
+  endDate: String!
+  students: [Student!]!
+}
+
+type Student {
+  id: ID!
+  progress: Int!
+  user: User!
+  lessons: [Lesson!]!
+}
+
+type User {
+  id: ID!
+  email: String!
+  password: String
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  creditCardNumber: String!
+  address: Address!
+  posts: [Post!]!
+  student: Student!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  author: User!
+  categories: [Category!]!
+}
+
+type Login {
+  id: ID!
+  email: String!
+  password: String
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  creditCardNumber: String!
+  address: Address!
+  posts: [Post!]!
+  student: Student!
+  token: String!
+}
+
+type Query {
+  posts: [Post!]!
+  post(id: ID!): Post!
+  getUserByEmail(email: String!): User!
+  categories: [Category!]!
+  category(id: ID!): Category!
+  lessons: [Lesson!]!
+  lesson(id: ID!): Lesson!
+  students: [Student!]!
+  student: Student!
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  deletePost(id: ID!): Post!
+  login(loginUserInput: LogInUserInput!): Login!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  deleteCategory(id: ID!): Category!
+  createLesson(createLessonInput: CreateLessonInput!): Lesson!
+  updateLesson(updateLessonInput: UpdateLessonInput!): Lesson!
+  patchLesson(updateLessonInput: PatchLessonInput!): Lesson!
+  removeLesson(id: ID!): Lesson!
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  categories: [String!]!
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+  categories: [String!]
+  id: ID!
+}
+
+input LogInUserInput {
+  email: String!
+  password: String!
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input UpdateCategoryInput {
+  name: String
+  id: ID!
+}
+
+input CreateLessonInput {
+  """name string"""
+  name: String!
+
+  """Start ISO date string"""
+  startDate: String!
+
+  """End ISO date string"""
+  endDate: String!
+  studentsIds: [String!]!
+}
+
+input UpdateLessonInput {
+  """name string"""
+  name: String
+
+  """Start ISO date string"""
+  startDate: String
+
+  """End ISO date string"""
+  endDate: String
+  studentsIds: [String!]
+  id: ID!
+}
+
+input PatchLessonInput {
+  id: ID!
+
+  """name string"""
+  name: String!
+
+  """Start ISO date string"""
+  startDate: String!
+
+  """End ISO date string"""
+  endDate: String!
+}
+
+input CreateStudentInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  creditCardNumber: String!
+  address: RegisterAddressInput!
+  progress: Int!
+}
+
+input RegisterAddressInput {
+  city: String!
+  street: String!
+}
+
+input UpdateStudentInput {
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  fullName: String
+  creditCardNumber: String
+  address: RegisterAddressInput
+  progress: Int
+  id: ID!
+}

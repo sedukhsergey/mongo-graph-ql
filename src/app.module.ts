@@ -11,11 +11,13 @@ import { SeriesModule } from './series/series.module';
 import { LessonModule } from './lesson/lesson.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { StudentModule } from './student/student.module';
+import * as path from 'path';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
+      // autoSchemaFile: true,
+      autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
     }),
     ConfigModule,
     DatabaseModule,

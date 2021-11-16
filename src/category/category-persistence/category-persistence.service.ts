@@ -5,10 +5,7 @@ import { Category, CategoryDocument } from './schemas/category.schema';
 import { CreateCategoryDataBodyDto } from '../dto/ create-category-data-body.dto';
 import { CreateCategoryInput } from '../dto/create-category.input';
 import { UpdateCategoryInput } from '../dto/update-category.input';
-import {
-  Post,
-  PostDocument,
-} from '../../post/post-persistence/schemas/post.schema';
+import { Post } from '../../post/post-persistence/schemas/post.schema';
 
 @Injectable()
 export class CategoryPersistenceService {

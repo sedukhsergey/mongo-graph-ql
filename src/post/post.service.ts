@@ -3,7 +3,6 @@ import { Post, PostDocument } from './post-persistence/schemas/post.schema';
 import { PostPersistenceService } from './post-persistence/post-persistence.service';
 import { UserPersistenceService } from '../user/user-persistence/user-persistence.service';
 import { UpdatePostRepositoryDto } from './dto/update-post-repository.dto';
-import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-repository.dto';
 import { SearchPostsDto } from './dto/search-posts.dto';
 import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 import { CreatePostInput } from './dto/create-post.input';
@@ -12,7 +11,7 @@ import {
   UserDocument,
 } from '../user/user-persistence/schemas/user.schema';
 import { Category } from '../category/category-persistence/schemas/category.schema';
-import { UpdatePostInput } from "./dto/update-post.input";
+import { UpdatePostInput } from './dto/update-post.input';
 
 @Injectable()
 export class PostService {

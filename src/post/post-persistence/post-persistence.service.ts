@@ -7,7 +7,6 @@ import {
   UserDocument,
 } from '../../user/user-persistence/schemas/user.schema';
 import { CategoryPersistenceService } from '../../category/category-persistence/category-persistence.service';
-import { UpdatePostPartialRepositoryDto } from '../dto/update-post-partial-repository.dto';
 import { UpdatePostRepositoryDto } from '../dto/update-post-repository.dto';
 import { Category } from '../../category/category-persistence/schemas/category.schema';
 import { DeleteManyDto } from '../../dto/delete-many.dto';
