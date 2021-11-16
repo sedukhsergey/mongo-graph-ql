@@ -21,6 +21,10 @@ export class CategoryPersistenceService {
     return this.categoryModel.find({ _id: { $in: ids } });
   }
 
+  async findByIdsWithPosts(ids: string[]): Promise<CategoryDocument[]> {
+    return this.categoryModel.find({ _id: { $in: ids } }).populate('posts');
+  }
+
   async findCategoryPosts(categoryId: string): Promise<Post[]> {
     const category: CategoryDocument = await this.categoryModel
       .findById(categoryId)

@@ -8,9 +8,8 @@ export default class LessonsLoaders {
 
   public readonly batchLessons = new DataLoader(
     async (studentIds: string[]) => {
-      const students = await this.studentPersistenceService.loadByIdsWithLessons(
-        studentIds,
-      );
+      const students =
+        await this.studentPersistenceService.loadByIdsWithLessons(studentIds);
       const studentsMap = new Map(
         students.map((student) => [student._id.valueOf(), student.lessons]),
       );

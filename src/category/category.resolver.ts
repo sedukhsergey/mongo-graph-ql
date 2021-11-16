@@ -11,10 +11,14 @@ import { CategoryType } from './types/category.type';
 import { CategoryService } from './category.service';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
+import PostsLoaders from '../post/posts.loaders';
 
 @Resolver(() => CategoryType)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private readonly postsLoaders: PostsLoaders,
+  ) {}
 
   @Query(() => [CategoryType], { name: 'categories' })
   categories() {
@@ -28,7 +32,7 @@ export class CategoryResolver {
 
   @ResolveField()
   async posts(@Parent() category: CategoryType) {
-    return this.categoryService.findCategoryPosts(category.id);
+    return this.postsLoaders.batchPostsByCategories.load(category.id);
   }
 
   @Mutation(() => CategoryType, { name: 'createCategory' })

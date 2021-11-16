@@ -11,7 +11,6 @@ import { StudentService } from './student.service';
 import { StudentType } from './types/student.type';
 import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
-import { LessonPersistenceService } from '../lesson/lesson-persistence/lesson-persistence.service';
 import { Student } from './schemas/student.schema';
 import UsersLoaders from '../user/users.loaders';
 import LessonsLoaders from '../lesson/lessons.loaders';

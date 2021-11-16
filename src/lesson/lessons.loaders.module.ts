@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import LessonsLoaders from './lessons.loaders';
-import { StudentPersistenceModule } from "../student/student-persistence/student-persistence.module";
+import { StudentPersistenceModule } from '../student/student-persistence/student-persistence.module';
 
 @Module({
   imports: [StudentPersistenceModule],
