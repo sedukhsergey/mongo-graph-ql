@@ -7,7 +7,12 @@ import { UpdatePostPartialRepositoryDto } from './dto/update-post-partial-reposi
 import { SearchPostsDto } from './dto/search-posts.dto';
 import { SearchPostsResultsDto } from './dto/search-posts-results.dto';
 import { CreatePostInput } from './dto/create-post.input';
-import { UserDocument } from '../user/user-persistence/schemas/user.schema';
+import {
+  User,
+  UserDocument,
+} from '../user/user-persistence/schemas/user.schema';
+import { Category } from '../category/category-persistence/schemas/category.schema';
+import { UpdatePostInput } from "./dto/update-post.input";
 
 @Injectable()
 export class PostService {
@@ -16,17 +21,25 @@ export class PostService {
     private readonly _userPersistenceService: UserPersistenceService,
   ) {}
 
-  async findAllByAuthor(userId: string): Promise<Post[]> {
+  async findAll(userId: string): Promise<Post[]> {
     const user: UserDocument | null =
       await this._userPersistenceService.getById(userId);
     if (user === null) {
       throw new NotFoundException('user with this id does not exist');
     }
-    return this._postPersistence.findAllByAuthor(user);
+    return this._postPersistence.findAll(user);
   }
 
   async findOne(id): Promise<PostDocument> {
     return this._postPersistence.findOne(id);
+  }
+
+  async findAuthorByPost(postId: string): Promise<User> {
+    return this._postPersistence.findAuthorByPostId(postId);
+  }
+
+  async findPostCategories(postId: string): Promise<Category[]> {
+    return this._postPersistence.findPostsCategories(postId);
   }
 
   async searchByCategories({
@@ -69,18 +82,8 @@ export class PostService {
     return this._postPersistence.create(CreatePostInput, user);
   }
 
-  async updatePartial({
-    id,
-    title,
-    content,
-    categories,
-  }: UpdatePostPartialRepositoryDto): Promise<Post> {
-    return this._postPersistence.updatePartial({
-      title,
-      content,
-      categories,
-      id,
-    });
+  async updatePartial(updatePostInput: UpdatePostInput): Promise<Post> {
+    return this._postPersistence.updatePartial(updatePostInput);
   }
 
   async updateAll({

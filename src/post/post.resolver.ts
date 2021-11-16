@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   ID,
   Mutation,
   Parent,
@@ -11,6 +12,7 @@ import { PostType } from './types/post.type';
 import { PostService } from './post.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { CategoryPersistenceService } from '../category/category-persistence/category-persistence.service';
+import { UpdatePostInput } from './dto/update-post.input';
 
 @Resolver(() => PostType)
 export class PostResolver {
@@ -20,27 +22,42 @@ export class PostResolver {
   ) {}
 
   @Query(() => [PostType], { name: 'posts' })
-  findAll(@Args('id', { type: () => ID }) id: string) {
-    return this.postService.findAllByAuthor(id);
+  posts(@Context() context: any) {
+    const user = context.req.user;
+    return this.postService.findAll(user.id);
   }
 
   @Query(() => PostType, { name: 'post' })
-  findOne(@Args('id', { type: () => ID }) id: string) {
+  post(@Args('id', { type: () => ID }) id: string) {
     return this.postService.findOne(id);
   }
 
   @ResolveField()
-  async categories(@Parent() posts: PostType) {
-    return this._categoryPersistenceService.findByIds(
-      posts.categories.map((i) => i.id),
-    );
+  async categories(@Parent() post: PostType) {
+    return await this.postService.findPostCategories(post.id);
+  }
+
+  @ResolveField()
+  async author(@Parent() post: PostType) {
+    return await this.postService.findAuthorByPost(post.id);
   }
 
   @Mutation(() => PostType, { name: 'createPost' })
   async createPost(
     @Args('createPostInput') createPostInput: CreatePostInput,
-    @Args('userId') userId: string,
+    @Context() context: any,
   ) {
-    return this.postService.create(createPostInput, userId);
+    const user = context.req.user;
+    return this.postService.create(createPostInput, user.id);
+  }
+
+  @Mutation(() => PostType, { name: 'updatePost' })
+  async updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
+    return this.postService.updatePartial(updatePostInput);
+  }
+
+  @Mutation(() => PostType, { name: 'deletePost' })
+  async deletePost(@Args('id', { type: () => ID }) id: string) {
+    return this.postService.delete(id);
   }
 }

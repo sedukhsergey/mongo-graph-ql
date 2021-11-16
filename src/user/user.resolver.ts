@@ -17,6 +17,6 @@ export class UserResolver {
 
   @ResolveField()
   async posts(@Parent() user: UserType) {
-    return this.postService.findAllByAuthor(user.id);
+    return this.postService.findAll(user.id);
   }
 }

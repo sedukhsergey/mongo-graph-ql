@@ -3,6 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Category, CategoryDocument } from './schemas/category.schema';
 import { CreateCategoryDataBodyDto } from '../dto/ create-category-data-body.dto';
+import { CreateCategoryInput } from '../dto/create-category.input';
+import { UpdateCategoryInput } from '../dto/update-category.input';
+import {
+  Post,
+  PostDocument,
+} from '../../post/post-persistence/schemas/post.schema';
 
 @Injectable()
 export class CategoryPersistenceService {
@@ -10,25 +16,36 @@ export class CategoryPersistenceService {
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
   ) {}
 
-  async findAll(): Promise<Category[]> {
+  async findAll(): Promise<CategoryDocument[]> {
     return this.categoryModel.find();
   }
 
-  async findByIds(ids: string[]): Promise<Category[]> {
+  async findByIds(ids: string[]): Promise<CategoryDocument[]> {
     return this.categoryModel.find({ _id: { $in: ids } });
   }
 
-  async findOne(id): Promise<Category> {
-    const category: Category | null = await this.categoryModel.findById(id);
+  async findCategoryPosts(categoryId: string): Promise<Post[]> {
+    const category: CategoryDocument = await this.categoryModel
+      .findById(categoryId)
+      .populate({
+        path: 'posts',
+      });
+    return category.posts;
+  }
+
+  async findOne(id): Promise<CategoryDocument | null> {
+    const category: CategoryDocument | null = await this.categoryModel.findById(
+      id,
+    );
     if (category !== null) {
       return category;
     }
     return null;
   }
 
-  async create(categoryData: CreateCategoryDataBodyDto) {
+  async create(createCategoryInput: CreateCategoryInput) {
     const createdCategory = await new this.categoryModel({
-      ...categoryData,
+      ...createCategoryInput,
     });
     return createdCategory.save();
   }
@@ -36,7 +53,7 @@ export class CategoryPersistenceService {
   async updateAll(
     id: string,
     categoryData: CreateCategoryDataBodyDto,
-  ): Promise<Category | null> {
+  ): Promise<CategoryDocument> {
     const category = await this.categoryModel
       .findByIdAndUpdate(id, categoryData)
       .setOptions({ overwrite: true, new: true });
@@ -47,11 +64,10 @@ export class CategoryPersistenceService {
   }
 
   async updatePartial(
-    id: string,
-    categoryData: CreateCategoryDataBodyDto,
-  ): Promise<Category | null> {
+    updateCategoryInput: UpdateCategoryInput,
+  ): Promise<CategoryDocument> {
     const category = await this.categoryModel
-      .findByIdAndUpdate(id, categoryData)
+      .findByIdAndUpdate(updateCategoryInput.id, updateCategoryInput)
       .setOptions({ new: true });
     if (category === null) {
       throw new NotFoundException();
@@ -59,10 +75,10 @@ export class CategoryPersistenceService {
     return category;
   }
 
-  async delete(categoryId: string): Promise<Category> {
+  async delete(categoryId: string): Promise<CategoryDocument> {
     const result = await this.categoryModel.findByIdAndDelete(categoryId);
     if (result === null) {
-      throw new NotFoundException();
+      throw new NotFoundException('Category with this id not found');
     }
     return result;
   }

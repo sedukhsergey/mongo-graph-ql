@@ -16,6 +16,6 @@ export class PostType {
   @Field(() => UserType)
   author: UserType;
 
-  @Field(() => CategoryType)
+  @Field(() => [CategoryType])
   categories: CategoryType[];
 }

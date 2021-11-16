@@ -1,7 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryPersistenceService } from './category-persistence/category-persistence.service';
 import { CreateCategoryDataBodyDto } from './dto/ create-category-data-body.dto';
-import { Category } from './category-persistence/schemas/category.schema';
+import {
+  Category,
+  CategoryDocument,
+} from './category-persistence/schemas/category.schema';
+import { CreateCategoryInput } from './dto/create-category.input';
+import { UpdateCategoryInput } from './dto/update-category.input';
+import { Post } from '../post/post-persistence/schemas/post.schema';
 
 @Injectable()
 export class CategoryService {
@@ -9,33 +15,41 @@ export class CategoryService {
     private readonly _categoryPersistence: CategoryPersistenceService,
   ) {}
 
-  async findAll(): Promise<Category[]> {
+  async findAll(): Promise<CategoryDocument[]> {
     return this._categoryPersistence.findAll();
   }
 
-  async findOne(id): Promise<Category> {
-    return this._categoryPersistence.findOne(id);
+  async findOne(id): Promise<CategoryDocument> {
+    const category: CategoryDocument | null =
+      await this._categoryPersistence.findOne(id);
+    if (category === null) {
+      throw new NotFoundException('Category with this id not found');
+    }
+    return category;
   }
 
-  async create(createCategory: CreateCategoryDataBodyDto): Promise<Category> {
-    return this._categoryPersistence.create(createCategory);
+  async findCategoryPosts(categoryId: string): Promise<Post[]> {
+    return this._categoryPersistence.findCategoryPosts(categoryId);
+  }
+
+  async create(createCategoryInput: CreateCategoryInput): Promise<Category> {
+    return this._categoryPersistence.create(createCategoryInput);
   }
 
   async updatePartial(
-    id: string,
-    updateCategory: CreateCategoryDataBodyDto,
-  ): Promise<Category> {
-    return this._categoryPersistence.updatePartial(id, updateCategory);
+    updateCategoryInput: UpdateCategoryInput,
+  ): Promise<CategoryDocument> {
+    return this._categoryPersistence.updatePartial(updateCategoryInput);
   }
 
   async updateAll(
     id: string,
     updateCategory: CreateCategoryDataBodyDto,
-  ): Promise<Category> {
+  ): Promise<CategoryDocument> {
     return this._categoryPersistence.updateAll(id, updateCategory);
   }
 
-  async delete(id: string): Promise<Category> {
+  async delete(id: string): Promise<CategoryDocument> {
     return this._categoryPersistence.delete(id);
   }
 }
