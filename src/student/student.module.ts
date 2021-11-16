@@ -6,6 +6,7 @@ import { AuthenticationModule } from '../authentication/authentication.module';
 import { UserPersistenceModule } from '../user/user-persistence/user-persistence.module';
 import { UserModule } from '../user/user.module';
 import { LessonPersistenceModule } from '../lesson/lesson-persistence/lesson-persistence.module';
+import { UsersLoadersModule } from "../user/users.loaders.module";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { LessonPersistenceModule } from '../lesson/lesson-persistence/lesson-per
     AuthenticationModule,
     UserPersistenceModule,
     LessonPersistenceModule,
+    UsersLoadersModule,
     UserModule,
   ],
   providers: [StudentResolver, StudentService],

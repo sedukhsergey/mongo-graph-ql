@@ -14,7 +14,8 @@ import { UpdateStudentInput } from './dto/update-student.input';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { UserService } from '../user/user.service';
 import { LessonPersistenceService } from '../lesson/lesson-persistence/lesson-persistence.service';
-import { StudentDocument } from './schemas/student.schema';
+import { Student, StudentDocument } from "./schemas/student.schema";
+import UsersLoaders from "../user/users.loaders";
 
 @Resolver(() => StudentType)
 export class StudentResolver {
@@ -23,6 +24,7 @@ export class StudentResolver {
     private readonly lessonPersistenceService: LessonPersistenceService,
     private readonly authenticationService: AuthenticationService,
     private readonly userService: UserService,
+    private usersLoaders: UsersLoaders,
   ) {}
 
   @Mutation(() => StudentType, { name: 'createStudent' })
@@ -44,8 +46,8 @@ export class StudentResolver {
   }
 
   @ResolveField()
-  async user(@Parent() student: StudentType) {
-    return this.userService.loadUserByStudent(student.id);
+  async user(@Parent() student: Student) {
+    return this.usersLoaders.batchAuthors.load(student);
   }
 
   @ResolveField()

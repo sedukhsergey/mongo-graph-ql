@@ -33,6 +33,16 @@ export class PostPersistenceService {
     return post.author;
   }
 
+  async loadPostsByUsers(ids: User[]): Promise<Post[]> {
+    return this.postModel
+      .find({
+        author: {
+          $in: ids,
+        },
+      })
+      .populate('author');
+  }
+
   async findByCategories({
     user,
     categoriesIds,

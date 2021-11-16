@@ -11,7 +11,7 @@ import { User, UserDocument } from './schemas/user.schema';
 import { PostPersistenceService } from '../../post/post-persistence/post-persistence.service';
 import { DeleteUserDto } from '../dto/delete-user.dto';
 import { RegisterUserInput } from '../../authentication/dto/register-user-input';
-import { StudentDocument } from '../../student/schemas/student.schema';
+import { Student, StudentDocument } from '../../student/schemas/student.schema';
 import { Post } from '../../post/post-persistence/schemas/post.schema';
 
 @Injectable()
@@ -25,9 +25,27 @@ export class UserPersistenceService {
     return this.userModel.find(null, { password: 0, address: { city: 0 } });
   }
 
+  async loadUsersByIds(ids: string[]): Promise<UserDocument[]> {
+    return this.userModel.find({ _id: { $in: ids } });
+  }
+
+  async loadUsersByStudents(students: Student[]): Promise<User[]> {
+    return this.userModel
+      .find({
+        student: {
+          $in: students,
+        },
+      })
+      .populate('student');
+  }
+
   async loadUserPostsByUserId(userId: string): Promise<Post[]> {
     const user = await this.userModel.findById(userId).populate('posts');
     return user.posts;
+  }
+
+  async loadUsersPostsByUsers(userIds: string[]): Promise<User[]> {
+    return this.userModel.find({ _id: { $in: userIds } }).populate('posts');
   }
 
   async getByEmail(email: string): Promise<UserDocument> {
