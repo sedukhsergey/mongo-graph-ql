@@ -33,6 +33,10 @@ export class StudentPersistenceService {
     return this.studentModel.find({ _id: { $in: ids } });
   }
 
+  async loadByIdsWithLessons(ids: string[]): Promise<StudentDocument[]> {
+    return this.studentModel.find({ _id: { $in: ids } }).populate('lessons')
+  }
+
   // async loadByIds(ids: string[]): Promise<StudentDocument[]> {
   //   return this.studentModel.find({ _id: { $in: ids } });
   // }

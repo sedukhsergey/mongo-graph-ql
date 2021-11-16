@@ -32,6 +32,10 @@ export class LessonPersistenceService {
     return this.lessonModel.find();
   }
 
+  async findByIds(ids: string[]): Promise<LessonDocument[]> {
+    return this.lessonModel.find({ _id: { $in: ids } });
+  }
+
   async findOneLessonById(id: string): Promise<LessonDocument> {
     const lesson: LessonDocument | null = await this.lessonModel
       .findById(id)
