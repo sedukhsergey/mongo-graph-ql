@@ -13,12 +13,14 @@ import { CreateLessonInput } from './dto/create-lesson.input';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { PatchLessonInput } from './dto/patch-lesson.input';
 import { StudentService } from '../student/student.service';
+import StudentsLoaders from '../student/students.loaders';
 
 @Resolver(() => LessonType)
 export class LessonResolver {
   constructor(
     private readonly _lessonService: LessonService,
     private readonly _studentService: StudentService,
+    private readonly studentsLoaders: StudentsLoaders,
   ) {}
 
   @Query(() => [LessonType], { name: 'lessons' })
@@ -33,8 +35,7 @@ export class LessonResolver {
 
   @ResolveField()
   async students(@Parent() lesson: LessonType) {
-    const idsList: any[] = lesson.students.map((i) => i.valueOf());
-    return this._studentService.findByIds(idsList);
+    return this.studentsLoaders.batchStudents.load(lesson.id);
   }
 
   @Mutation(() => LessonType, { name: 'createLesson' })
