@@ -1,19 +1,36 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { UserPersistenceService } from './user-persistence/user-persistence.service';
-import { Student } from '../student/schemas/student.schema';
+import { StudentPersistenceService } from '../student/student-persistence/student-persistence.service';
+import { PostPersistenceService } from '../post/post-persistence/post-persistence.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class UsersLoaders {
-  constructor(private userPersistenceService: UserPersistenceService) {}
+  constructor(
+    private readonly studentPersistenceService: StudentPersistenceService,
+    private readonly postPersistenceService: PostPersistenceService,
+  ) {}
 
-  public readonly batchAuthors = new DataLoader(async (students: Student[]) => {
-    const users = await this.userPersistenceService.loadUsersByStudents(
-      students,
-    );
-    const usersMap = new Map(
-      users.map((user) => [user.student._id.valueOf(), user]),
-    );
-    return students.map((student) => usersMap.get(student._id.valueOf()));
-  });
+  public readonly batchAuthorsByStudents = new DataLoader(
+    async (studentsIds: string[]) => {
+      const students = await this.studentPersistenceService.loadByIdsWithUsers(
+        studentsIds,
+      );
+      const studentsMap = new Map(
+        students.map((student) => [student._id.valueOf(), student.user]),
+      );
+      return studentsIds.map((id) => studentsMap.get(id));
+    },
+  );
+
+  public readonly batchAuthorsByPosts = new DataLoader(
+    async (postsIds: string[]) => {
+      const posts = await this.postPersistenceService.findByIdsWithUsers(
+        postsIds,
+      );
+      const postsMap = new Map(
+        posts.map((post) => [post._id.valueOf(), post.author]),
+      );
+      return postsIds.map((id) => postsMap.get(id));
+    },
+  );
 }

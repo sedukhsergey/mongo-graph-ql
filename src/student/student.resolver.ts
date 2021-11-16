@@ -11,7 +11,6 @@ import { StudentService } from './student.service';
 import { StudentType } from './types/student.type';
 import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
-import { Student } from './schemas/student.schema';
 import UsersLoaders from '../user/users.loaders';
 import LessonsLoaders from '../lesson/lessons.loaders';
 
@@ -42,8 +41,8 @@ export class StudentResolver {
   }
 
   @ResolveField()
-  async user(@Parent() student: Student) {
-    return this.usersLoaders.batchAuthors.load(student);
+  async user(@Parent() student: StudentType) {
+    return this.usersLoaders.batchAuthorsByStudents.load(student.id);
   }
 
   @ResolveField()

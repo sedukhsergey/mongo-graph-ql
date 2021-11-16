@@ -26,6 +26,14 @@ export class PostPersistenceService {
     await this.postModel.deleteMany({ _id: ids }).session(session);
   }
 
+  async findByIdsWithUsers(ids: string[]): Promise<Post[]> {
+    return this.postModel.find({ _id: { $in: ids } }).populate('author');
+  }
+
+  async findByIdsWithCategories(ids: string[]): Promise<Post[]> {
+    return this.postModel.find({ _id: { $in: ids } }).populate('categories');
+  }
+
   async findAuthorByPostId(postId: string): Promise<User> {
     const post: PostDocument = await this.postModel
       .findById(postId)

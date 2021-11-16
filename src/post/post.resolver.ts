@@ -11,14 +11,16 @@ import {
 import { PostType } from './types/post.type';
 import { PostService } from './post.service';
 import { CreatePostInput } from './dto/create-post.input';
-import { CategoryPersistenceService } from '../category/category-persistence/category-persistence.service';
 import { UpdatePostInput } from './dto/update-post.input';
+import UsersLoaders from '../user/users.loaders';
+import CategoryLoaders from '../category/category.loaders';
 
 @Resolver(() => PostType)
 export class PostResolver {
   constructor(
     private readonly postService: PostService,
-    private readonly _categoryPersistenceService: CategoryPersistenceService,
+    private readonly usersLoaders: UsersLoaders,
+    private readonly categoryLoaders: CategoryLoaders,
   ) {}
 
   @Query(() => [PostType], { name: 'posts' })
@@ -34,12 +36,12 @@ export class PostResolver {
 
   @ResolveField()
   async categories(@Parent() post: PostType) {
-    return await this.postService.findPostCategories(post.id);
+    return await this.categoryLoaders.batchCategoriesByPosts.load(post.id);
   }
 
   @ResolveField()
   async author(@Parent() post: PostType) {
-    return await this.postService.findAuthorByPost(post.id);
+    return this.usersLoaders.batchAuthorsByPosts.load(post.id);
   }
 
   @Mutation(() => PostType, { name: 'createPost' })
