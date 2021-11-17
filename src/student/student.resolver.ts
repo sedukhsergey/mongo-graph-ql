@@ -13,6 +13,7 @@ import { CreateStudentInput } from './dto/create-student.input';
 import { UpdateStudentInput } from './dto/update-student.input';
 import UsersLoaders from '../user/users.loaders';
 import LessonsLoaders from '../lesson/lessons.loaders';
+import { Public } from '../decorators/public.decorator';
 
 @Resolver(() => StudentType)
 export class StudentResolver {
@@ -22,6 +23,7 @@ export class StudentResolver {
     private lessonsLoaders: LessonsLoaders,
   ) {}
 
+  @Public()
   @Mutation(() => StudentType, { name: 'createStudent' })
   createStudent(
     @Args('createStudentInput') createStudentInput: CreateStudentInput,
