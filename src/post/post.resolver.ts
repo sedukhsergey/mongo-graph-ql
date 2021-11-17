@@ -34,7 +34,14 @@ export class PostResolver {
   ) {}
 
   @Public()
-  @Subscription(() => PostType)
+  @Subscription(() => PostType, {
+    resolve: (value) => {
+      return {
+        ...value.postAdded,
+        id: value.postAdded._id,
+      };
+    },
+  })
   postAdded() {
     return this.pubSub.asyncIterator(POST_ADDED_EVENT);
   }

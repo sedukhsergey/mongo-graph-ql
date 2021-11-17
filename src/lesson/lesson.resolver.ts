@@ -35,7 +35,6 @@ export class LessonResolver {
   @Public()
   @Subscription(() => LessonType, {
     resolve: (value) => {
-      console.log('value.id',value)
       return {
         ...value.lessonAdded,
         id: value.lessonAdded._id,
@@ -66,7 +65,6 @@ export class LessonResolver {
     @Args('createLessonInput') createLessonInput: CreateLessonInput,
   ) {
     const lesson = await this._lessonService.create(createLessonInput);
-    console.log('lesson',lesson)
     await this.pubSub.publish(LESSON_ADDED_EVENT, { lessonAdded: lesson });
     return lesson;
   }
