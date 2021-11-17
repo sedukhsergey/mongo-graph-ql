@@ -6,10 +6,10 @@ export class CreateLessonInput {
   name: string;
 
   @Field({ description: 'Start ISO date string' })
-  startDate: string;
+  startDate: Date;
 
   @Field({ description: 'End ISO date string' })
-  endDate: string;
+  endDate: Date;
 
   @Field(() => [String])
   studentsIds: string[];

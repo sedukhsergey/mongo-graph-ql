@@ -14,10 +14,10 @@ export class Lesson {
   name: string;
 
   @Prop()
-  startDate: string;
+  startDate: Date;
 
   @Prop()
-  endDate: string;
+  endDate: Date;
 
   // ManyToMany;
   @Prop({

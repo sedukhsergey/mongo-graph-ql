@@ -17,10 +17,15 @@ type Address {
 type Lesson {
   id: ID!
   name: String!
-  startDate: String!
-  endDate: String!
+  startDate: DateTime!
+  endDate: DateTime!
   students: [Student!]!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Student {
   id: ID!
@@ -124,10 +129,10 @@ input CreateLessonInput {
   name: String!
 
   """Start ISO date string"""
-  startDate: String!
+  startDate: DateTime!
 
   """End ISO date string"""
-  endDate: String!
+  endDate: DateTime!
   studentsIds: [String!]!
 }
 
@@ -136,10 +141,10 @@ input UpdateLessonInput {
   name: String
 
   """Start ISO date string"""
-  startDate: String
+  startDate: DateTime
 
   """End ISO date string"""
-  endDate: String
+  endDate: DateTime
   studentsIds: [String!]
   id: ID!
 }
@@ -151,10 +156,10 @@ input PatchLessonInput {
   name: String!
 
   """Start ISO date string"""
-  startDate: String!
+  startDate: DateTime!
 
   """End ISO date string"""
-  endDate: String!
+  endDate: DateTime!
 }
 
 input CreateStudentInput {

@@ -13,7 +13,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { StudentModule } from './student/student.module';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
-import { PubSubModule } from "./pub-sub/pub-sub.module";
+import { PubSubModule } from './pub-sub/pub-sub.module';
 
 @Module({
   imports: [
@@ -24,6 +24,9 @@ import { PubSubModule } from "./pub-sub/pub-sub.module";
         playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
         autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
         installSubscriptionHandlers: true,
+        buildSchemaOptions: {
+          dateScalarMode: 'isoDate',
+        },
       }),
     }),
     ConfigModule,
