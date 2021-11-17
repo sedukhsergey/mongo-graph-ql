@@ -16,7 +16,6 @@ import { PatchLessonInput } from './dto/patch-lesson.input';
 import { StudentService } from '../student/student.service';
 import StudentsLoaders from '../student/students.loaders';
 import { Public } from '../decorators/public.decorator';
-import { PostType } from '../post/types/post.type';
 import { Inject } from '@nestjs/common';
 import { PUB_SUB } from '../pub-sub/pub-sub.module';
 import { RedisPubSub } from 'graphql-redis-subscriptions';

@@ -5,9 +5,11 @@ import { UserPersistenceModule } from '../user/user-persistence/user-persistence
 import { PostResolver } from './post.resolver';
 import { UsersLoadersModule } from '../user/users.loaders.module';
 import { CategoryLoadersModule } from '../category/category.loaders.module';
+import { PubSubModule } from "../pub-sub/pub-sub.module";
 
 @Module({
   imports: [
+    PubSubModule,
     PostPersistenceModule,
     UserPersistenceModule,
     UsersLoadersModule,

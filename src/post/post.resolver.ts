@@ -21,9 +21,7 @@ import { Inject } from '@nestjs/common';
 import { Public } from '../decorators/public.decorator';
 
 const POST_ADDED_EVENT = 'postAdded';
-// const POST_ADDED_EVENT = = Symbol(
-//   'AccountCredentialsUseCase',
-// );
+
 @Resolver(() => PostType)
 export class PostResolver {
   constructor(

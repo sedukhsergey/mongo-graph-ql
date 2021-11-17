@@ -5,9 +5,11 @@ import { LessonPersistenceModule } from './lesson-persistence/lesson-persistence
 import { StudentModule } from '../student/student.module';
 import { StudentPersistenceModule } from '../student/student-persistence/student-persistence.module';
 import { StudentsLoadersModule } from '../student/students.loaders.module';
+import { PubSubModule } from '../pub-sub/pub-sub.module';
 
 @Module({
   imports: [
+    PubSubModule,
     LessonPersistenceModule,
     StudentModule,
     StudentPersistenceModule,
