@@ -16,6 +16,7 @@ import * as Joi from 'joi';
         MONGO_HOST: Joi.string().default('localhost:27017'),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        GRAPHQL_PLAYGROUND: Joi.number().required().default(1),
       }),
     }),
   ],

@@ -12,12 +12,18 @@ import { LessonModule } from './lesson/lesson.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { StudentModule } from './student/student.module';
 import * as path from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      // autoSchemaFile: true,
-      autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
+    GraphQLModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
+        autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
+        installSubscriptionHandlers: true,
+      }),
     }),
     ConfigModule,
     DatabaseModule,
