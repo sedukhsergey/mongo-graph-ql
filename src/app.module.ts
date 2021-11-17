@@ -13,6 +13,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { StudentModule } from './student/student.module';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
+import { PubSubModule } from "./pub-sub/pub-sub.module";
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ConfigService } from '@nestjs/config';
     SeriesModule,
     LessonModule,
     StudentModule,
+    PubSubModule,
   ],
   providers: [
     {

@@ -7,6 +7,7 @@ import {
   Query,
   ResolveField,
   Resolver,
+  Subscription,
 } from '@nestjs/graphql';
 import { PostType } from './types/post.type';
 import { PostService } from './post.service';
@@ -14,14 +15,29 @@ import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import UsersLoaders from '../user/users.loaders';
 import CategoryLoaders from '../category/category.loaders';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { PUB_SUB } from '../pub-sub/pub-sub.module';
+import { Inject } from '@nestjs/common';
+import { Public } from '../decorators/public.decorator';
 
+const POST_ADDED_EVENT = 'postAdded';
+// const POST_ADDED_EVENT = = Symbol(
+//   'AccountCredentialsUseCase',
+// );
 @Resolver(() => PostType)
 export class PostResolver {
   constructor(
     private readonly postService: PostService,
     private readonly usersLoaders: UsersLoaders,
     private readonly categoryLoaders: CategoryLoaders,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub,
   ) {}
+
+  @Public()
+  @Subscription(() => PostType)
+  postAdded() {
+    return this.pubSub.asyncIterator(POST_ADDED_EVENT);
+  }
 
   @Query(() => [PostType], { name: 'posts' })
   posts(@Context() context: any) {
@@ -50,7 +66,9 @@ export class PostResolver {
     @Context() context: any,
   ) {
     const user = context.req.user;
-    return this.postService.create(createPostInput, user.id);
+    const post = await this.postService.create(createPostInput, user.id);
+    await this.pubSub.publish(POST_ADDED_EVENT, { postAdded: post });
+    return post;
   }
 
   @Mutation(() => PostType, { name: 'updatePost' })

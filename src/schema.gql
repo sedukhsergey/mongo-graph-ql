@@ -184,3 +184,8 @@ input UpdateStudentInput {
   progress: Int
   id: ID!
 }
+
+type Subscription {
+  postAdded: Post!
+  lessonAdded: Lesson!
+}

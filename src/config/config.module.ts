@@ -17,6 +17,8 @@ import * as Joi from 'joi';
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
         GRAPHQL_PLAYGROUND: Joi.number().required().default(1),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
       }),
     }),
   ],

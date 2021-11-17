@@ -170,7 +170,7 @@ export class PostPersistenceService {
     const createdPost = await new this.postModel({
       ...postData,
       author,
-    }).populate('categories');
+    });
     return createdPost.save();
   }
 
