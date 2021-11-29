@@ -14,6 +14,7 @@ import { StudentModule } from './student/student.module';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
 import { PubSubModule } from './pub-sub/pub-sub.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
     LessonModule,
     StudentModule,
     PubSubModule,
+    ProfileModule,
   ],
   providers: [
     {

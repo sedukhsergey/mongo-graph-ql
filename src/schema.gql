@@ -69,6 +69,17 @@ type Login {
   token: String!
 }
 
+type Visitor {
+  _id: ID!
+  locale: String!
+}
+
+type Profile {
+  _id: ID!
+  en: String!
+  visitor: Visitor!
+}
+
 type Query {
   posts: [Post!]!
   post(id: ID!): Post!
@@ -95,6 +106,7 @@ type Mutation {
   removeLesson(id: ID!): Lesson!
   createStudent(createStudentInput: CreateStudentInput!): Student!
   updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  createProfile(createProfileInput: CreateProfileInput!): Profile!
 }
 
 input CreatePostInput {
@@ -188,6 +200,15 @@ input UpdateStudentInput {
   address: RegisterAddressInput
   progress: Int
   id: ID!
+}
+
+input CreateProfileInput {
+  en: String!
+  visitor: VisitorInput!
+}
+
+input VisitorInput {
+  locale: String!
 }
 
 type Subscription {
